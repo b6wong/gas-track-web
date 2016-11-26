@@ -1,40 +1,46 @@
-//import React from 'react';
-import * as superagent from 'superagent';
-import { observable, computed, action } from 'mobx';
+import { observable, action } from 'mobx';
+import { forEach } from 'lodash';
 
-class GasLog {
-    @observable gasLogId;
-    @observable vehicleId;
-    @observable odometer;
-    @observable volume;
-    @observable octane;
-    @observable cost;
-    @observable dateTime;
+class GasLogStore {
 
-    constructor(gasLogId, vehicleId, odometer, volume, octane, cost, dateTime) {
-        this.gasLogId = gasLogId;
-        this.vehicleId = vehicleId;
-        this.odometer = odometer;
-        this.volume = volume;
-        this.octane = octane;
-        this.cost = cost;
-        this.dateTime = dateTime;
+    @observable gasLogs;
+    
+    constructor() {
+        this.gasLogs = [];
     }
 
-    @computed get asJSON() {
-		return {
-			id: this.gasLogId,
-			vehicleId: this.vehicleId,
-			odometer: this.odometer,
-            volume: this.volume,
-            octane: this.octane,
-            cost: this.cost,
-            dateTime: this.dateTime
-		}
-	}
+    @action mergeGasLogs = (ids) => {
+        forEach(ids, (id) => this.gasLogs.push(id));
+    }
+
+    getGasLogs() {
+        return this.gasLogs;
+    }
+
+    @action reset = () => {
+        this.gasLogs = [];
+    }
 
 }
 
+const gasLogStore = new GasLogStore();
+
+export default gasLogStore;
+export { GasLogStore };
+
+
+
+/*
+     gasLogId;
+     vehicleId;
+     odometer;
+     volume;
+     octane;
+     cost;
+     dateTime;
+*/
+
+/*
 export class GasLogStore {
     @observable gasLogs = [];
     @observable selectedVehicleId = '';
@@ -81,4 +87,5 @@ export class GasLogStore {
     }
 
 }
+*/
  

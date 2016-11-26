@@ -1,19 +1,67 @@
-import React, { Component } from 'react';
-import { observer } from 'mobx-react';
-import { GasLogStore } from '../stores/gaslog-store';
+import React from 'react';
+import { observer, inject } from 'mobx-react';
+import * as actions from '../actions/index';
 
-const gasLogStore = new GasLogStore();
-let newGasLog = { 
-        "id": "",
-        "vehicleId": "",
-        "odometer": "",
-        "volume": "",
-        "octane": "",
-        "cost": "",
-        "isFillUp": "",
-        "dateTime": ""
-    };
+@inject('gasLogStore') @observer
+class GasLog extends React.Component {
 
+    constructor(props) {
+        super(props);
+        this.fetchGasLogByVehicle = this.fetchGasLogByVehicle.bind(this);
+    }
+
+    componentDidMount() {
+        this.fetchGasLogByVehicle('111');
+    }
+
+    fetchGasLogByVehicle(vehicleId) {
+        actions.fetchGasLogByVehicle(vehicleId);
+    }
+
+    render() {
+
+        const { gasLogStore } = this.props;
+        
+        return (
+            <div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Odometer</th>
+                            <th>Volume</th>
+                            <th>Octane</th>
+                            <th>Cost</th>
+                            <th>Fill Up</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {
+                        gasLogStore.getGasLogs().map(
+                            (gasLog, idx) => 
+                                <tr key={idx}> 
+                                    <td>{ gasLog.dateTime }</td>
+                                    <td>{ gasLog.odometer }</td>
+                                    <td>{ gasLog.volume }</td>
+                                    <td>{ gasLog.octane }</td>
+                                    <td>{ gasLog.cost }</td>
+                                    <td>{ gasLog.isFillUp }</td>
+                                </tr>
+                        )
+                    }
+                    </tbody>
+                </table>
+
+            </div>
+        );
+    }
+
+}
+
+export default GasLog;
+
+
+/*
 
 @observer
 class GasLog extends Component {
@@ -97,3 +145,5 @@ class GasLog extends Component {
 }
 
 export default GasLog;
+
+*/

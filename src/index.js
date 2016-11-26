@@ -1,9 +1,17 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './App';
-import './index.css';
+import { Provider } from 'mobx-react';
+import { Router, Route, IndexRoute, browserHistory } from 'react-router';
+import App from './components/App';
+import * as stores from './stores';
 
 ReactDOM.render(
-  <App />,
+  <Provider { ...stores }>
+    <Router history={browserHistory}>
+      <Route path='/' component={App}>
+        <IndexRoute component={App} />
+      </Route>
+    </Router>
+  </Provider>,
   document.getElementById('root')
 );
