@@ -36,4 +36,39 @@ export function fetchVehicles() {
     gasLogStore.mergeVehicles(data);
 }
 
+export function addNewEntry(odometer, volume, octane, cost, isFillUp) {
+    const initUrl = 'gasLog';
+    //const url = '//gas-track-server.herokuapp.com/' + initUrl;
+    const url = '//localhost:3001/' + initUrl;
+    const dateTime = new Date();
+    const data = 
+        {
+        "vehicleId": gasLogStore.getSelectedVehicle(),
+        "odometer": odometer,
+        "volume": volume,
+        "octane": octane,
+        "cost": cost,
+        "isFillUp": isFillUp,
+        "dateTime": dateTime.getTime()
+        };
+
+    return fetch(url, {
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        method: "POST",
+        body: JSON.stringify(data)
+    })
+    .then(response => response.json())
+    .then(responseJson => {
+        gasLogStore.mergeGasLogs([responseJson]);
+        gasLogStore.toggleNewEntryMode();
+    })
+    .catch(err => {
+        console.log(err);
+    });
+
+
+}
 

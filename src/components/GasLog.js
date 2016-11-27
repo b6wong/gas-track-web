@@ -43,11 +43,13 @@ class GasLog extends React.Component {
     }
 
     handleSubmitNewEntry = (obj) => {
-        console.log("Odometer: ", obj.formData.odometer);
-        console.log("Volume: ", obj.formData.volume);
-        console.log("Octane: ", obj.formData.octane);
-        console.log("Cost: ", obj.formData.cost);
-        console.log("Fill Up?: ", obj.formData.fillUp);
+        actions.addNewEntry(
+            obj.formData.odometer, 
+            obj.formData.volume, 
+            obj.formData.octane,
+            obj.formData.cost,
+            obj.formData.fillUp
+            );
     }
 
     render() {
