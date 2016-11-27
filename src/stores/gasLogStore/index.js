@@ -4,21 +4,47 @@ import { forEach } from 'lodash';
 class GasLogStore {
 
     @observable gasLogs;
+    @observable vehicles;
+    @observable selectedVehicle;
     
     constructor() {
         this.gasLogs = [];
+        this.vehicles = [];
+        this.selectedVehicle = null;
     }
 
     @action mergeGasLogs = (ids) => {
         forEach(ids, (id) => this.gasLogs.push(id));
     }
 
+    @action mergeVehicles = (ids) => {
+        forEach(ids, (id) => this.vehicles.push(id));
+    }
+
     getGasLogs() {
         return this.gasLogs;
     }
 
+    getVehicles() {
+        return this.vehicles;
+    }
+
+    isVehicleSelected() {
+        return this.selectedVehicle !== null;
+    }
+
+    @action selectVehicle(vehicleId){
+        this.selectedVehicle = vehicleId;
+    }
+
+    @action selectVehicleAtIndex(index) {
+        this.selectedVehicle = this.vehicles[index].id ? this.vehicles[index].id : null;
+    }
+
     @action reset = () => {
         this.gasLogs = [];
+        this.vehicles = [];
+        this.selectedVehicle = null;
     }
 
 }

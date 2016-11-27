@@ -1,6 +1,9 @@
-import { clearGasLog, fetchGasLogByVehicle } from './gasLog';
+import { clearGasLog, fetchGasLogByVehicle, fetchVehicles, selectVehicle, selectVehicleAtIndex } from './gasLog';
 
 export {
     clearGasLog,
-    fetchGasLogByVehicle
+    fetchGasLogByVehicle,
+    fetchVehicles,
+    selectVehicle,
+    selectVehicleAtIndex
 };

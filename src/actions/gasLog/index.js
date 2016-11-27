@@ -4,6 +4,14 @@ export function clearGasLog() {
     gasLogStore.reset();
 }
 
+export function selectVehicle(vehicleId) {
+    gasLogStore.selectVehicle(vehicleId);
+}
+
+export function selectVehicleAtIndex(index) {
+    gasLogStore.selectVehicleAtIndex(index);
+}
+
 export function fetchGasLogByVehicle(vehicleId) {
     const initUrl = 'gasLogs'; // Probably need to add endpoint to lookup by vehicleId
     const url = '//gas-track-server.herokuapp.com/' + initUrl;
@@ -14,3 +22,14 @@ export function fetchGasLogByVehicle(vehicleId) {
             gasLogStore.mergeGasLogs(data);
         });
 }
+
+export function fetchVehicles() {
+    const data = [
+        {"id": "1", "description":"2017 VW Tiguan"},
+        {"id": "2", "description":"Car 2"},
+        {"id": "3", "description":"Car 3"}
+    ];
+    gasLogStore.mergeVehicles(data);
+}
+
+
