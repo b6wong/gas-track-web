@@ -17,7 +17,7 @@ export function toggleNewEntryMode() {
 }
 
 export function fetchGasLogByVehicle(vehicleId) {
-    const initUrl = 'gasLogs'; // Probably need to add endpoint to lookup by vehicleId
+    const initUrl = 'gasLogs/' + vehicleId;
     const url = '//gas-track-server.herokuapp.com/' + initUrl;
 
     return fetch(url)
@@ -38,12 +38,11 @@ export function fetchVehicles() {
 
 export function addNewEntry(odometer, volume, octane, cost, isFillUp) {
     const initUrl = 'gasLog';
-    //const url = '//gas-track-server.herokuapp.com/' + initUrl;
-    const url = '//localhost:3001/' + initUrl;
+    const url = '//gas-track-server.herokuapp.com/' + initUrl;
     const dateTime = new Date();
     const data = 
         {
-        "vehicleId": gasLogStore.getSelectedVehicle(),
+        "vehicleId": parseInt(gasLogStore.getSelectedVehicle(), 10),
         "odometer": odometer,
         "volume": volume,
         "octane": octane,
@@ -68,7 +67,5 @@ export function addNewEntry(odometer, volume, octane, cost, isFillUp) {
     .catch(err => {
         console.log(err);
     });
-
-
 }
 
