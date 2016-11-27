@@ -6,6 +6,30 @@ import ActionDone from 'material-ui/svg-icons/action/done';
 import ActionOpacity from 'material-ui/svg-icons/action/opacity';
 import {green500, red500} from 'material-ui/styles/colors';
 
+import Form from 'react-jsonschema-form';
+
+
+const schema = {
+  title: "New Entry",
+  type: "object",
+  required: ["odometer", "volume", "octane", "cost"],
+  properties: {
+    odometer: {type: "number", title: "Odometer"},
+    volume: {type: "number", title: "Volume"},
+    octane: {
+        type: "number",
+        enum: [87, 89, 91, 94],
+        enumNames: ["87", "89", "91", "94"],
+        title: "Octane",
+        default: 91
+    },
+    cost: {type: "number", title: "Cost"},
+    fillUp: {type: "boolean", title: "Fill Up?", default: true}
+  }
+};
+
+const log = (type) => console.log.bind(console, type);
+
 @inject('gasLogStore') @observer
 class GasLog extends React.Component {
 
@@ -18,6 +42,14 @@ class GasLog extends React.Component {
         actions.fetchGasLogByVehicle(vehicleId);
     }
 
+    handleSubmitNewEntry = (obj) => {
+        console.log("Odometer: ", obj.formData.odometer);
+        console.log("Volume: ", obj.formData.volume);
+        console.log("Octane: ", obj.formData.octane);
+        console.log("Cost: ", obj.formData.cost);
+        console.log("Fill Up?: ", obj.formData.fillUp);
+    }
+
     render() {
 
         const { gasLogStore } = this.props;
@@ -25,7 +57,9 @@ class GasLog extends React.Component {
         return (
 
             gasLogStore.isNewEntryMode() ? 
-                <div> Hello World </div> :
+                <Form schema={schema}
+                    onSubmit={this.handleSubmitNewEntry}
+                    onError={log("errors")} /> :
                 <Table
                     selectable={false}
                 >
@@ -72,6 +106,7 @@ function dateFormat(date) {
     if (d.getFullYear() <= 2016 && d.getMonth() <= 2) return "n/a";
     return d.toDateString();
 }
+
 
 
 export default GasLog;
