@@ -1,4 +1,4 @@
-import { clearGasLog, fetchGasLogByVehicle, fetchVehicles, selectVehicle, selectVehicleAtIndex, setNewEntryMode } from './gasLog';
+import { clearGasLog, fetchGasLogByVehicle, fetchVehicles, selectVehicle, selectVehicleAtIndex, toggleNewEntryMode } from './gasLog';
 
 export {
     clearGasLog,
@@ -6,5 +6,5 @@ export {
     fetchVehicles,
     selectVehicle,
     selectVehicleAtIndex,
-    setNewEntryMode
+    toggleNewEntryMode
 };

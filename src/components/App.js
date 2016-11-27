@@ -28,7 +28,7 @@ export default class App extends React.Component {
     return (
       <MuiThemeProvider muiTheme={muiTheme}>
         <div>
-          <ApplicationBar isVehicleSelected={gasLogStore.isVehicleSelected()} />
+          <ApplicationBar isVehicleSelected={gasLogStore.isVehicleSelected()} isNewEntryMode={gasLogStore.isNewEntryMode()} />
           {
             gasLogStore.isVehicleSelected() ? 
               <GasLog /> : 
@@ -44,14 +44,12 @@ export default class App extends React.Component {
 const ApplicationBar = (props) => (
   <AppBar 
     title="Gas Log" 
-    iconElementRight={props.isVehicleSelected ? <Logged /> : <div></div>}
+    iconElementRight={props.isVehicleSelected ? <Logged isNewEntryMode={props.isNewEntryMode} /> : <div></div>}
   />
 );
 
-
 const Logged = (props) => (
   <IconMenu
-    {...props}
     iconButtonElement={
       <IconButton><MoreVertIcon /></IconButton>
     }
@@ -59,8 +57,7 @@ const Logged = (props) => (
     anchorOrigin={{horizontal: 'right', vertical: 'top'}}
   >
     <MenuItem primaryText="Back to Vehicle Selection" onClick={handleReset} />
-    <MenuItem primaryText="Add Entry" onClick={handleAddEntry} />
-
+    <MenuItem primaryText={ props.isNewEntryMode ? "Cancel New Entry" : "New Entry"} onClick={handleAddEntry} />
   </IconMenu>
 );
 
@@ -69,6 +66,5 @@ function handleReset() {
 }
 
 function handleAddEntry() {
-  console.log("add new entry");
-  actions.setNewEntryMode(true);
+  actions.toggleNewEntryMode();
 }

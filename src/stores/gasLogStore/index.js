@@ -38,8 +38,8 @@ class GasLogStore {
         this.selectedVehicle = this.vehicles[index].id ? this.vehicles[index].id : null;
     }
 
-    @action setNewEntryMode = (newEntryMode) => {
-        this.newEntryMode = newEntryMode;
+    @action toggleNewEntryMode = () => {
+        this.newEntryMode = !this.newEntryMode;
     }
 
     getGasLogs() {

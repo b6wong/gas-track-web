@@ -12,8 +12,8 @@ export function selectVehicleAtIndex(index) {
     gasLogStore.selectVehicleAtIndex(index);
 }
 
-export function setNewEntryMode(newEntryMode) {
-    gasLogStore.setNewEntryMode(newEntryMode);
+export function toggleNewEntryMode() {
+    gasLogStore.toggleNewEntryMode();
 }
 
 export function fetchGasLogByVehicle(vehicleId) {

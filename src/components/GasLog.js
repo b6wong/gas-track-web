@@ -23,42 +23,45 @@ class GasLog extends React.Component {
         const { gasLogStore } = this.props;
         
         return (
-            <Table
-                selectable={false}
-            >
-                <TableHeader
-                    displayRowCheckbox={false}
-                    displaySelectAll={false}
-                    adjustForCheckbox={false}
+
+            gasLogStore.isNewEntryMode() ? 
+                <div> Hello World </div> :
+                <Table
+                    selectable={false}
                 >
-                    <TableRow>
-                        <TableHeaderColumn>Date</TableHeaderColumn>
-                        <TableHeaderColumn>Odometer (km)</TableHeaderColumn>
-                        <TableHeaderColumn>Volume (L)</TableHeaderColumn>
-                        <TableHeaderColumn>Octane</TableHeaderColumn>
-                        <TableHeaderColumn>Cost</TableHeaderColumn>
-                        <TableHeaderColumn>Fill Up?</TableHeaderColumn>
-                    </TableRow>
-                </TableHeader>
-                <TableBody
-                    displayRowCheckbox={false}
-                    stripedRows={true}
-                >
-                    {
-                        gasLogStore.getGasLogs().map(
-                            (gasLog, idx) => 
-                                <TableRow key={idx}> 
-                                    <TableRowColumn>{ dateFormat(gasLog.dateTime) }</TableRowColumn>
-                                    <TableRowColumn>{ gasLog.odometer }</TableRowColumn>
-                                    <TableRowColumn>{ gasLog.volume }</TableRowColumn>
-                                    <TableRowColumn>{ gasLog.octane }</TableRowColumn>
-                                    <TableRowColumn>{ gasLog.cost }</TableRowColumn>
-                                    <TableRowColumn>{ gasLog.isFillUp ? <ActionDone color={green500} /> : <ActionOpacity color={red500} />}</TableRowColumn>
-                                </TableRow>
-                        )
-                    }
-                </TableBody>
-            </Table>
+                    <TableHeader
+                        displayRowCheckbox={false}
+                        displaySelectAll={false}
+                        adjustForCheckbox={false}
+                    >
+                        <TableRow>
+                            <TableHeaderColumn>Date</TableHeaderColumn>
+                            <TableHeaderColumn>Odometer (km)</TableHeaderColumn>
+                            <TableHeaderColumn>Volume (L)</TableHeaderColumn>
+                            <TableHeaderColumn>Octane</TableHeaderColumn>
+                            <TableHeaderColumn>Cost</TableHeaderColumn>
+                            <TableHeaderColumn>Fill Up?</TableHeaderColumn>
+                        </TableRow>
+                    </TableHeader>
+                    <TableBody
+                        displayRowCheckbox={false}
+                        stripedRows={true}
+                    >
+                        {
+                            gasLogStore.getGasLogs().map(
+                                (gasLog, idx) => 
+                                    <TableRow key={idx}> 
+                                        <TableRowColumn>{ dateFormat(gasLog.dateTime) }</TableRowColumn>
+                                        <TableRowColumn>{ gasLog.odometer }</TableRowColumn>
+                                        <TableRowColumn>{ gasLog.volume }</TableRowColumn>
+                                        <TableRowColumn>{ gasLog.octane }</TableRowColumn>
+                                        <TableRowColumn>{ gasLog.cost }</TableRowColumn>
+                                        <TableRowColumn>{ gasLog.isFillUp ? <ActionDone color={green500} /> : <ActionOpacity color={red500} />}</TableRowColumn>
+                                    </TableRow>
+                            )
+                        }
+                    </TableBody>
+                </Table>
         );
     }
 
