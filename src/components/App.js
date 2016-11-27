@@ -1,5 +1,6 @@
 import React from 'react';
 import {observer, inject} from 'mobx-react';
+import * as actions from '../actions/index';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import {deepOrange500} from 'material-ui/styles/colors';
@@ -27,10 +28,7 @@ export default class App extends React.Component {
     return (
       <MuiThemeProvider muiTheme={muiTheme}>
         <div>
-          <AppBar 
-            title="Gas Log" 
-            iconElementRight={gasLogStore.isVehicleSelected() ? <Logged /> : <div></div>}
-          />
+          <ApplicationBar isVehicleSelected={gasLogStore.isVehicleSelected()} />
           {
             gasLogStore.isVehicleSelected() ? 
               <GasLog /> : 
@@ -43,6 +41,13 @@ export default class App extends React.Component {
   }
 }
 
+const ApplicationBar = (props) => (
+  <AppBar 
+    title="Gas Log" 
+    iconElementRight={props.isVehicleSelected ? <Logged /> : <div></div>}
+  />
+);
+
 
 const Logged = (props) => (
   <IconMenu
@@ -53,8 +58,17 @@ const Logged = (props) => (
     targetOrigin={{horizontal: 'right', vertical: 'top'}}
     anchorOrigin={{horizontal: 'right', vertical: 'top'}}
   >
-    <MenuItem primaryText="Back to Vehicle Selection" onClick={() => {console.log('back to vehicle selection')}} />
-    <MenuItem primaryText="Add Entry" onClick={() => {console.log("add new entry")}} />
+    <MenuItem primaryText="Back to Vehicle Selection" onClick={handleReset} />
+    <MenuItem primaryText="Add Entry" onClick={handleAddEntry} />
 
   </IconMenu>
 );
+
+function handleReset() {
+  actions.clearGasLog();
+}
+
+function handleAddEntry() {
+  console.log("add new entry");
+  actions.setNewEntryMode(true);
+}

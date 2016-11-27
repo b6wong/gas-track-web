@@ -12,6 +12,10 @@ export function selectVehicleAtIndex(index) {
     gasLogStore.selectVehicleAtIndex(index);
 }
 
+export function setNewEntryMode(newEntryMode) {
+    gasLogStore.setNewEntryMode(newEntryMode);
+}
+
 export function fetchGasLogByVehicle(vehicleId) {
     const initUrl = 'gasLogs'; // Probably need to add endpoint to lookup by vehicleId
     const url = '//gas-track-server.herokuapp.com/' + initUrl;

@@ -6,11 +6,20 @@ class GasLogStore {
     @observable gasLogs;
     @observable vehicles;
     @observable selectedVehicle;
+    @observable newEntryMode;
     
     constructor() {
         this.gasLogs = [];
         this.vehicles = [];
         this.selectedVehicle = null;
+        this.newEntryMode = false;
+    }
+
+    @action reset = () => {
+        this.gasLogs = [];
+        this.vehicles = [];
+        this.selectedVehicle = null;
+        this.newEntryMode = false;
     }
 
     @action mergeGasLogs = (ids) => {
@@ -19,6 +28,18 @@ class GasLogStore {
 
     @action mergeVehicles = (ids) => {
         forEach(ids, (id) => this.vehicles.push(id));
+    }
+
+    @action selectVehicle = (vehicleId) => {
+        this.selectedVehicle = vehicleId;
+    }
+
+    @action selectVehicleAtIndex = (index) => {
+        this.selectedVehicle = this.vehicles[index].id ? this.vehicles[index].id : null;
+    }
+
+    @action setNewEntryMode = (newEntryMode) => {
+        this.newEntryMode = newEntryMode;
     }
 
     getGasLogs() {
@@ -33,18 +54,12 @@ class GasLogStore {
         return this.selectedVehicle !== null;
     }
 
-    @action selectVehicle(vehicleId){
-        this.selectedVehicle = vehicleId;
+    getSelectedVehicle() {
+        return this.selectedVehicle;
     }
 
-    @action selectVehicleAtIndex(index) {
-        this.selectedVehicle = this.vehicles[index].id ? this.vehicles[index].id : null;
-    }
-
-    @action reset = () => {
-        this.gasLogs = [];
-        this.vehicles = [];
-        this.selectedVehicle = null;
+    isNewEntryMode() {
+        return this.newEntryMode;
     }
 
 }

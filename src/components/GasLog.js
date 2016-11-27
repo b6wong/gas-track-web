@@ -10,7 +10,8 @@ import {green500, red500} from 'material-ui/styles/colors';
 class GasLog extends React.Component {
 
     componentDidMount() {
-        this.fetchGasLogByVehicle('111');
+        const { gasLogStore } = this.props;
+        this.fetchGasLogByVehicle(gasLogStore.getSelectedVehicle());
     }
 
     fetchGasLogByVehicle(vehicleId) {
@@ -71,3 +72,15 @@ function dateFormat(date) {
 
 
 export default GasLog;
+
+
+/*
+<Dialog repositionOnUpdate={false}
+                autoDetectWindowHeight={false}
+                modal={false}
+                open={true}
+                contentStyle={{width: '100%', transform: 'translate(0, 0)'}}
+                bodyStyle={{padding: 0}}
+                style={{paddingTop: 0, height: '100vh'}}
+        >
+*/

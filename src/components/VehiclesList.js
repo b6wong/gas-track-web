@@ -57,5 +57,4 @@ class VehiclesList extends React.Component {
 
 }
 
-
 export default VehiclesList;
