@@ -1,99 +1,124 @@
-import React, { Component } from 'react';
-import { observer } from 'mobx-react';
-import { GasLogStore } from '../stores/gaslog-store';
+import React from 'react';
+import { observer, inject } from 'mobx-react';
+import * as actions from '../actions/index';
+import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from 'material-ui/Table';
+import ActionDone from 'material-ui/svg-icons/action/done';
+import ActionOpacity from 'material-ui/svg-icons/action/opacity';
+import {green500, red500} from 'material-ui/styles/colors';
 
-const gasLogStore = new GasLogStore();
-let newGasLog = { 
-        "id": "",
-        "vehicleId": "",
-        "odometer": "",
-        "volume": "",
-        "octane": "",
-        "cost": "",
-        "isFillUp": "",
-        "dateTime": ""
-    };
+import Form from 'react-jsonschema-form';
 
+var moment = require('moment');
 
-@observer
-class GasLog extends Component {
+const schema = {
+  title: "New Entry",
+  type: "object",
+  required: ["odometer", "volume", "octane", "cost"],
+  properties: {
+    odometer: {type: "number", title: "Odometer"},
+    volume: {type: "number", title: "Volume"},
+    octane: {
+        type: "number",
+        enum: [87, 89, 91, 94],
+        enumNames: ["87", "89", "91", "94"],
+        title: "Octane",
+        default: 91
+    },
+    cost: {type: "number", title: "Cost"},
+    fillUp: {type: "boolean", title: "Fill Up?", default: true}
+  }
+};
 
-    componentWillMount() {
-       gasLogStore.loadGasLogs(1);
+const log = (type) => console.log.bind(console, type);
+
+@inject('gasLogStore') @observer
+class GasLog extends React.Component {
+
+    componentDidMount() {
+        const { gasLogStore } = this.props;
+        this.fetchGasLogByVehicle(gasLogStore.getSelectedVehicle());
+    }
+
+    fetchGasLogByVehicle(vehicleId) {
+        actions.fetchGasLogByVehicle(vehicleId);
+    }
+
+    handleSubmitNewEntry = (obj) => {
+        actions.addNewEntry(
+            obj.formData.odometer, 
+            obj.formData.volume, 
+            obj.formData.octane,
+            obj.formData.cost,
+            obj.formData.fillUp
+            );
     }
 
     render() {
+
+        const { gasLogStore } = this.props;
+        
         return (
-            <div>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Date</th>
-                            <th>Odometer</th>
-                            <th>Volume</th>
-                            <th>Octane</th>
-                            <th>Cost</th>
-                            <th>Fill Up</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    {
-                        gasLogStore.gasLogs.map(
-                            (gasLog, idx) => 
-                                <tr key={idx}> 
-                                    <td>{ gasLog.dateTime }</td>
-                                    <td>{ gasLog.odometer }</td>
-                                    <td>{ gasLog.volume }</td>
-                                    <td>{ gasLog.octane }</td>
-                                    <td>{ gasLog.cost }</td>
-                                    <td>{ gasLog.isFillUp }</td>
-                                </tr>
-                        )
-                    }
-                    </tbody>
-                </table>
-                
-                <input type="text" placeholder="odometer" onChange={ this.onChangeOdometer } />
-                <input type="text" placeholder="volume" onChange={ this.onChangeVolume } />
-                <input type="text" placeholder="cost" onChange={ this.onChangeCost } />
-                <button onClick={ this.onNewEntry }>New Entry</button>
 
-            </div>
+            gasLogStore.isNewEntryMode() ? 
+                <Form schema={schema}
+                    onSubmit={this.handleSubmitNewEntry}
+                    onError={log("errors")} /> :
+                <Table
+                    selectable={false}
+                >
+                    <TableHeader
+                        displayRowCheckbox={false}
+                        displaySelectAll={false}
+                        adjustForCheckbox={false}
+                    >
+                        <TableRow>
+                            <TableHeaderColumn>Date</TableHeaderColumn>
+                            <TableHeaderColumn>(km)</TableHeaderColumn>
+                            <TableHeaderColumn>(L)</TableHeaderColumn>
+                            <TableHeaderColumn>Fill Up?</TableHeaderColumn>
+                        </TableRow>
+                    </TableHeader>
+                    <TableBody
+                        displayRowCheckbox={false}
+                        stripedRows={true}
+                    >
+                        {
+                            gasLogStore.getGasLogs().map(
+                                (gasLog, idx) => 
+                                    <TableRow key={idx}> 
+                                        <TableRowColumn>{ dateFormat(gasLog.dateTime) }</TableRowColumn>
+                                        <TableRowColumn>{ gasLog.odometer }</TableRowColumn>
+                                        <TableRowColumn>{ gasLog.volume }</TableRowColumn>
+                                        <TableRowColumn>{ gasLog.isFillUp ? <ActionDone color={green500} /> : <ActionOpacity color={red500} />}</TableRowColumn>
+                                    </TableRow>
+                            )
+                        }
+                    </TableBody>
+                </Table>
         );
-    }
-
-    onNewEntry = () => {
-        console.log("Add new entry!");
-        newGasLog.id = 1; //Hardcoding to 1 -- need it to auto increment
-        newGasLog.dateTime = Date.now();
-        newGasLog.isFillUp = true;
-        newGasLog.octane = 91;
-        newGasLog.vehicleId = 1;
-        gasLogStore.addGasLogEntry(newGasLog);
-        newGasLog = { 
-            "id": "",
-            "vehicleId": "",
-            "odometer": "",
-            "volume": "",
-            "octane": "",
-            "cost": "",
-            "isFillUp": "",
-            "dateTime": ""
-        };
-    }
-
-    onChangeOdometer = (event) => {
-        newGasLog.odometer = event.target.value;
-    }
-
-    onChangeVolume = (event) => {
-        newGasLog.volume = event.target.value;
-    }
-
-    onChangeCost = (event) => {
-        newGasLog.cost = event.target.value;
     }
 
 }
 
+function dateFormat(date) {
+    var d = new Date(date);
+    if (d.getFullYear() <= 2016 && d.getMonth() <= 2) return "n/a";
+    return moment(date).format('MMM Do YYYY');
+//    return d.toDateString();
+}
+
+
+
 export default GasLog;
+
+
+/*
+<Dialog repositionOnUpdate={false}
+                autoDetectWindowHeight={false}
+                modal={false}
+                open={true}
+                contentStyle={{width: '100%', transform: 'translate(0, 0)'}}
+                bodyStyle={{padding: 0}}
+                style={{paddingTop: 0, height: '100vh'}}
+        >
+*/

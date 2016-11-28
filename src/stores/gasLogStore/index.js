@@ -1,40 +1,87 @@
-//import React from 'react';
-import * as superagent from 'superagent';
-import { observable, computed, action } from 'mobx';
+import { observable, action } from 'mobx';
+import { forEach } from 'lodash';
 
-class GasLog {
-    @observable gasLogId;
-    @observable vehicleId;
-    @observable odometer;
-    @observable volume;
-    @observable octane;
-    @observable cost;
-    @observable dateTime;
+class GasLogStore {
 
-    constructor(gasLogId, vehicleId, odometer, volume, octane, cost, dateTime) {
-        this.gasLogId = gasLogId;
-        this.vehicleId = vehicleId;
-        this.odometer = odometer;
-        this.volume = volume;
-        this.octane = octane;
-        this.cost = cost;
-        this.dateTime = dateTime;
+    @observable gasLogs;
+    @observable vehicles;
+    @observable selectedVehicle;
+    @observable newEntryMode;
+    
+    constructor() {
+        this.gasLogs = [];
+        this.vehicles = [];
+        this.selectedVehicle = null;
+        this.newEntryMode = false;
     }
 
-    @computed get asJSON() {
-		return {
-			id: this.gasLogId,
-			vehicleId: this.vehicleId,
-			odometer: this.odometer,
-            volume: this.volume,
-            octane: this.octane,
-            cost: this.cost,
-            dateTime: this.dateTime
-		}
-	}
+    @action reset = () => {
+        this.gasLogs = [];
+        this.vehicles = [];
+        this.selectedVehicle = null;
+        this.newEntryMode = false;
+    }
+
+    @action mergeGasLogs = (ids) => {
+        forEach(ids, (id) => this.gasLogs.push(id));
+    }
+
+    @action mergeVehicles = (ids) => {
+        forEach(ids, (id) => this.vehicles.push(id));
+    }
+
+    @action selectVehicle = (vehicleId) => {
+        this.selectedVehicle = vehicleId;
+    }
+
+    @action selectVehicleAtIndex = (index) => {
+        this.selectedVehicle = this.vehicles[index].id ? this.vehicles[index].id : null;
+    }
+
+    @action toggleNewEntryMode = () => {
+        this.newEntryMode = !this.newEntryMode;
+    }
+
+    getGasLogs() {
+        return this.gasLogs;
+    }
+
+    getVehicles() {
+        return this.vehicles;
+    }
+
+    isVehicleSelected() {
+        return this.selectedVehicle !== null;
+    }
+
+    getSelectedVehicle() {
+        return this.selectedVehicle;
+    }
+
+    isNewEntryMode() {
+        return this.newEntryMode;
+    }
 
 }
 
+const gasLogStore = new GasLogStore();
+
+export default gasLogStore;
+export { GasLogStore };
+
+
+
+/*
+     gasLogId;
+     vehicleId;
+     odometer;
+     volume;
+     octane;
+     cost;
+     dateTime;
+*/
+
+/*
 export class GasLogStore {
     @observable gasLogs = [];
     @observable selectedVehicleId = '';
@@ -81,4 +128,5 @@ export class GasLogStore {
     }
 
 }
+*/
  
