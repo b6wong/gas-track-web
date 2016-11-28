@@ -8,6 +8,7 @@ import {green500, red500} from 'material-ui/styles/colors';
 
 import Form from 'react-jsonschema-form';
 
+var moment = require('moment');
 
 const schema = {
   title: "New Entry",
@@ -72,10 +73,8 @@ class GasLog extends React.Component {
                     >
                         <TableRow>
                             <TableHeaderColumn>Date</TableHeaderColumn>
-                            <TableHeaderColumn>Odometer (km)</TableHeaderColumn>
-                            <TableHeaderColumn>Volume (L)</TableHeaderColumn>
-                            <TableHeaderColumn>Octane</TableHeaderColumn>
-                            <TableHeaderColumn>Cost</TableHeaderColumn>
+                            <TableHeaderColumn>(km)</TableHeaderColumn>
+                            <TableHeaderColumn>(L)</TableHeaderColumn>
                             <TableHeaderColumn>Fill Up?</TableHeaderColumn>
                         </TableRow>
                     </TableHeader>
@@ -90,8 +89,6 @@ class GasLog extends React.Component {
                                         <TableRowColumn>{ dateFormat(gasLog.dateTime) }</TableRowColumn>
                                         <TableRowColumn>{ gasLog.odometer }</TableRowColumn>
                                         <TableRowColumn>{ gasLog.volume }</TableRowColumn>
-                                        <TableRowColumn>{ gasLog.octane }</TableRowColumn>
-                                        <TableRowColumn>{ gasLog.cost }</TableRowColumn>
                                         <TableRowColumn>{ gasLog.isFillUp ? <ActionDone color={green500} /> : <ActionOpacity color={red500} />}</TableRowColumn>
                                     </TableRow>
                             )
@@ -106,7 +103,8 @@ class GasLog extends React.Component {
 function dateFormat(date) {
     var d = new Date(date);
     if (d.getFullYear() <= 2016 && d.getMonth() <= 2) return "n/a";
-    return d.toDateString();
+    return moment(date).format('MMM Do YYYY');
+//    return d.toDateString();
 }
 
 
