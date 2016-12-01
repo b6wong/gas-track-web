@@ -8,10 +8,6 @@ export function selectVehicle(vehicleId) {
     gasLogStore.selectVehicle(vehicleId);
 }
 
-export function selectVehicleAtIndex(index) {
-    gasLogStore.selectVehicleAtIndex(index);
-}
-
 export function toggleNewEntryMode() {
     gasLogStore.toggleNewEntryMode();
 }
@@ -31,7 +27,7 @@ export function fetchVehicles() {
     const data = [
         {"id": "1", "description":"2017 VW Tiguan"},
         {"id": "2", "description":"Car 2"},
-        {"id": "3", "description":"Car 3"}
+        {"id": "7", "description":"Car 3"}
     ];
     gasLogStore.mergeVehicles(data);
 }
