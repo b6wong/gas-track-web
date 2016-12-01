@@ -1,11 +1,7 @@
 import React from 'react';
 import { observer, inject } from 'mobx-react';
 import * as actions from '../actions/index';
-import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from 'material-ui/Table';
-import ActionDone from 'material-ui/svg-icons/action/done';
-import ActionOpacity from 'material-ui/svg-icons/action/opacity';
-import {green500, red500} from 'material-ui/styles/colors';
-
+import {Table } from 'react-bootstrap';
 import Form from 'react-jsonschema-form';
 
 var moment = require('moment');
@@ -63,37 +59,28 @@ class GasLog extends React.Component {
                 <Form schema={schema}
                     onSubmit={this.handleSubmitNewEntry}
                     onError={log("errors")} /> :
-                <Table
-                    selectable={false}
-                >
-                    <TableHeader
-                        displayRowCheckbox={false}
-                        displaySelectAll={false}
-                        adjustForCheckbox={false}
-                    >
-                        <TableRow>
-                            <TableHeaderColumn>Date</TableHeaderColumn>
-                            <TableHeaderColumn>(km)</TableHeaderColumn>
-                            <TableHeaderColumn>(L)</TableHeaderColumn>
-                            <TableHeaderColumn>Fill Up?</TableHeaderColumn>
-                        </TableRow>
-                    </TableHeader>
-                    <TableBody
-                        displayRowCheckbox={false}
-                        stripedRows={true}
-                    >
+                <Table>
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>(km)</th>
+                            <th>(L)</th>
+                            <th>Fill Up?</th>
+                        </tr>
+                    </thead>
+                    <tbody>
                         {
                             gasLogStore.getGasLogs().map(
                                 (gasLog, idx) => 
-                                    <TableRow key={idx}> 
-                                        <TableRowColumn>{ dateFormat(gasLog.dateTime) }</TableRowColumn>
-                                        <TableRowColumn>{ gasLog.odometer }</TableRowColumn>
-                                        <TableRowColumn>{ gasLog.volume }</TableRowColumn>
-                                        <TableRowColumn>{ gasLog.isFillUp ? <ActionDone color={green500} /> : <ActionOpacity color={red500} />}</TableRowColumn>
-                                    </TableRow>
+                                    <tr key={idx}> 
+                                        <td>{ dateFormat(gasLog.dateTime) }</td>
+                                        <td>{ gasLog.odometer }</td>
+                                        <td>{ gasLog.volume }</td>
+                                        <td>{ gasLog.isFillUp ? "Y" : "N"}</td>
+                                    </tr>
                             )
                         }
-                    </TableBody>
+                    </tbody>
                 </Table>
         );
     }
@@ -107,18 +94,4 @@ function dateFormat(date) {
 //    return d.toDateString();
 }
 
-
-
 export default GasLog;
-
-
-/*
-<Dialog repositionOnUpdate={false}
-                autoDetectWindowHeight={false}
-                modal={false}
-                open={true}
-                contentStyle={{width: '100%', transform: 'translate(0, 0)'}}
-                bodyStyle={{padding: 0}}
-                style={{paddingTop: 0, height: '100vh'}}
-        >
-*/

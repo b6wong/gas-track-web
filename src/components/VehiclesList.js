@@ -1,7 +1,7 @@
 import React from 'react';
 import { observer, inject } from 'mobx-react';
 import * as actions from '../actions/index';
-import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from 'material-ui/Table';
+import {Table } from 'react-bootstrap';
 
 @inject('gasLogStore') @observer
 class VehiclesList extends React.Component {
@@ -14,8 +14,8 @@ class VehiclesList extends React.Component {
         actions.fetchVehicles();
     }
 
-    handleCellClick(row, column, event) {
-        actions.selectVehicleAtIndex(row);
+    handleSelectVehicle(vehicleId) {
+        actions.selectVehicle(vehicleId);
     }
 
     render() {
@@ -23,34 +23,24 @@ class VehiclesList extends React.Component {
         const { gasLogStore } = this.props;
         
         return (
-            <Table
-                selectable={false}
-                onCellClick={this.handleCellClick}
-            >
-                <TableHeader
-                    displayRowCheckbox={false}
-                    displaySelectAll={false}
-                    adjustForCheckbox={false}
-                >
-                    <TableRow>
-                        <TableHeaderColumn>Id</TableHeaderColumn>
-                        <TableHeaderColumn>Vehicle</TableHeaderColumn>
-                    </TableRow>
-                </TableHeader>
-                <TableBody
-                    displayRowCheckbox={false}
-                    stripedRows={true}
-                >
+            <Table responsive>
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Vehicle</th>
+                    </tr>
+                </thead>
+                <tbody>
                     {
                         gasLogStore.getVehicles().map(
                             (vehicle, idx) => 
-                                <TableRow key={idx}> 
-                                    <TableRowColumn>{ vehicle.id }</TableRowColumn>
-                                    <TableRowColumn>{ vehicle.description }</TableRowColumn>
-                                </TableRow>
+                                <tr key={idx} data-href={idx} onClick={() => this.handleSelectVehicle(vehicle.id)}> 
+                                    <td>{ vehicle.id }</td>
+                                    <td>{ vehicle.description }</td>
+                                </tr>
                         )
                     }
-                </TableBody>
+                </tbody>
             </Table>
         );
     }

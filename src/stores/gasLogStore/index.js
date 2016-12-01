@@ -34,10 +34,6 @@ class GasLogStore {
         this.selectedVehicle = vehicleId;
     }
 
-    @action selectVehicleAtIndex = (index) => {
-        this.selectedVehicle = this.vehicles[index].id ? this.vehicles[index].id : null;
-    }
-
     @action toggleNewEntryMode = () => {
         this.newEntryMode = !this.newEntryMode;
     }
