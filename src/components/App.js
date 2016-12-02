@@ -7,7 +7,7 @@ import VehiclesList from './VehiclesList';
 
 import { Navbar, Nav, NavItem } from 'react-bootstrap';
 
-import 'bootstrap/dist/css/bootstrap.css';
+//import 'bootstrap/dist/css/bootstrap.css';
 
 
 @inject('gasLogStore') @observer
@@ -18,11 +18,13 @@ export default class App extends React.Component {
     const { gasLogStore } = this.props;
     return (
       <div>
-        <Navbar inverse collapseOnSelect>
+        <Navbar collapseOnSelect>
           <Navbar.Header>
-            Gas Log
+            <Navbar.Brand>
+              Gas Log
+            </Navbar.Brand>
+            <Navbar.Toggle />
           </Navbar.Header>
-          <Navbar.Toggle />
           <Navbar.Collapse>
             { gasLogStore.isVehicleSelected() ? <LoggedMenu isNewEntryMode={ gasLogStore.isNewEntryMode() } /> : <div></div> }
           </Navbar.Collapse>
