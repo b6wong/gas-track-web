@@ -32,7 +32,7 @@ export function fetchVehicles() {
     gasLogStore.mergeVehicles(data);
 }
 
-export function addNewEntry(odometer, volume, octane, cost, isFillUp) {
+export function addNewEntry(odometer, volume, octane, cost, isFillUp, tireType) {
     const initUrl = 'gasLog';
     const url = '//gas-track-server.herokuapp.com/' + initUrl;
     const dateTime = new Date();
@@ -44,7 +44,8 @@ export function addNewEntry(odometer, volume, octane, cost, isFillUp) {
         "octane": octane,
         "cost": cost,
         "isFillUp": isFillUp,
-        "dateTime": dateTime.getTime()
+        "dateTime": dateTime.getTime(),
+        "tireType": tireType
         };
 
     return fetch(url, {

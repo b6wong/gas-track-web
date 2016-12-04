@@ -21,7 +21,14 @@ const schema = {
         default: 91
     },
     cost: {type: "number", title: "Cost"},
-    fillUp: {type: "boolean", title: "Fill Up?", default: true}
+    fillUp: {type: "boolean", title: "Fill Up?", default: true},
+    tireType: {
+                type: "string", 
+                enum: ["S", "W"],
+                enumNames: ["S", "W"],
+                title: "Tire Type",
+                default: "W"
+        }
   }
 };
 
@@ -45,7 +52,8 @@ class GasLog extends React.Component {
             obj.formData.volume, 
             obj.formData.octane,
             obj.formData.cost,
-            obj.formData.fillUp
+            obj.formData.fillUp,
+            obj.formData.tireType
             );
     }
 
