@@ -1,5 +1,5 @@
 
-import React, { PropTypes as T } from 'react'
+import React from 'react'
 
 export class Container extends React.Component {
   render() {
