@@ -69,9 +69,11 @@ class GasLog extends React.Component {
             return (
                 <Grid fluid={true}>
                     <Row>
-                        <Col md={8} mdOffset={5} xs={6} xsOffset={4}>
+                        <Col xs={5} md={5}></Col>
+                        <Col md={2} xs={2}>
                             <Loading type='bubbles' color='#999999' />
                         </Col>
+                        <Col xs={5} md={5}></Col>
                     </Row>
                 </Grid>
             );

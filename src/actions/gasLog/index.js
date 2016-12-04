@@ -21,7 +21,6 @@ export function fetchGasLogByVehicle(vehicleId) {
     return fetch(url)
         .then(response => response.json())
         .then(data => {
-            if (data.length === 0) { gasLogStore.mergeGasLogs({"nothing":"0"}) }
             gasLogStore.mergeGasLogs(data);
             gasLogStore.finishRequest();
         });
