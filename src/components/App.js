@@ -1,12 +1,9 @@
 import React from 'react';
 import {observer, inject} from 'mobx-react';
 import * as actions from '../actions/index';
-
 import GasLog from './GasLog';
 import VehiclesList from './VehiclesList';
-
 import { Navbar, Nav, NavItem } from 'react-bootstrap';
-
 
 @inject('gasLogStore') @observer
 export default class App extends React.Component {
