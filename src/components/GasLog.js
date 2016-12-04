@@ -1,8 +1,10 @@
 import React from 'react';
 import { observer, inject } from 'mobx-react';
 import * as actions from '../actions/index';
-import {Table } from 'react-bootstrap';
+import {Table, Grid, Row, Col } from 'react-bootstrap';
 import Form from 'react-jsonschema-form';
+
+import Loading from 'react-loading';
 
 var moment = require('moment');
 
@@ -63,6 +65,19 @@ class GasLog extends React.Component {
 
         const { gasLogStore } = this.props;
         
+        if (gasLogStore.getNumberOfPendingRequests() > 0) {
+            return (
+                <Grid fluid={true}>
+                    <Row>
+                        <Col md={8} mdOffset={5} xs={6} xsOffset={4}>
+                            <Loading type='bubbles' color='#999999' />
+                        </Col>
+                    </Row>
+                </Grid>
+            );
+        }
+
+
         return (
 
             gasLogStore.isNewEntryMode() ? 
