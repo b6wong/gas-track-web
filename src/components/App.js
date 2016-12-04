@@ -7,6 +7,8 @@ import VehiclesList from './VehiclesList';
 
 import { Navbar, Nav, NavItem } from 'react-bootstrap';
 
+import Loading from 'react-loading';
+
 //import 'bootstrap/dist/css/bootstrap.css';
 
 
@@ -16,7 +18,12 @@ export default class App extends React.Component {
   render() {
 
     const { gasLogStore } = this.props;
+
+   
+    if (gasLogStore.getNumberOfPendingRequests() > 0) return <Loading type='bubbles' color='#999999' height={500} width={500} />;
+
     return (
+
       <div>
         <Navbar collapseOnSelect>
           <Navbar.Header>
@@ -34,8 +41,8 @@ export default class App extends React.Component {
             <GasLog /> :
             <VehiclesList />
         }
-
       </div>
+
     );
 
   }

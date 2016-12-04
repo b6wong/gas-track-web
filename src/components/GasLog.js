@@ -39,7 +39,9 @@ class GasLog extends React.Component {
 
     componentDidMount() {
         const { gasLogStore } = this.props;
-        this.fetchGasLogByVehicle(gasLogStore.getSelectedVehicle());
+        if (gasLogStore.getGasLogs().length === 0) {
+            this.fetchGasLogByVehicle(gasLogStore.getSelectedVehicle());
+        }
     }
 
     fetchGasLogByVehicle(vehicleId) {

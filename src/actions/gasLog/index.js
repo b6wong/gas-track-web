@@ -16,20 +16,28 @@ export function fetchGasLogByVehicle(vehicleId) {
     const initUrl = 'gasLogs/' + vehicleId;
     const url = '//gas-track-server.herokuapp.com/' + initUrl;
 
+    gasLogStore.startRequest();
+
     return fetch(url)
         .then(response => response.json())
         .then(data => {
+            if (data.length === 0) { gasLogStore.mergeGasLogs({"nothing":"0"}) }
             gasLogStore.mergeGasLogs(data);
+            gasLogStore.finishRequest();
         });
 }
 
 export function fetchVehicles() {
+
+    gasLogStore.startRequest();
+
     const data = [
         {"id": "1", "description":"2017 VW Tiguan"},
         {"id": "2", "description":"Car 2"},
         {"id": "7", "description":"Car 3"}
     ];
     gasLogStore.mergeVehicles(data);
+    gasLogStore.finishRequest();
 }
 
 export function addNewEntry(odometer, volume, octane, cost, isFillUp, tireType) {

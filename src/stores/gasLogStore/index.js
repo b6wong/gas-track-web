@@ -7,12 +7,14 @@ class GasLogStore {
     @observable vehicles;
     @observable selectedVehicle;
     @observable newEntryMode;
+    @observable numberOfPendingRequests;
     
     constructor() {
         this.gasLogs = [];
         this.vehicles = [];
         this.selectedVehicle = null;
         this.newEntryMode = false;
+        this.numberOfPendingRequests = 0;
     }
 
     @action reset = () => {
@@ -20,6 +22,7 @@ class GasLogStore {
         this.vehicles = [];
         this.selectedVehicle = null;
         this.newEntryMode = false;
+        this.numberOfPendingRequests = 0;
     }
 
     @action mergeGasLogs = (ids) => {
@@ -36,6 +39,16 @@ class GasLogStore {
 
     @action toggleNewEntryMode = () => {
         this.newEntryMode = !this.newEntryMode;
+    }
+
+    @action startRequest = () => {
+        this.numberOfPendingRequests++;
+    }
+
+    @action finishRequest = () => {
+        if (this.numberOfPendingRequests > 0){
+            this.numberOfPendingRequests--;
+        }
     }
 
     getGasLogs() {
@@ -56,6 +69,10 @@ class GasLogStore {
 
     isNewEntryMode() {
         return this.newEntryMode;
+    }
+
+    getNumberOfPendingRequests() {
+        return this.numberOfPendingRequests;
     }
 
 }
