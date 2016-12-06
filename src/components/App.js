@@ -43,6 +43,7 @@ const LoggedMenu = (props) => (
   <Nav pullRight>
       <NavItem onClick={handleReset}>Return to Main</NavItem>
       <NavItem onClick={handleAddEntry}>{ props.isNewEntryMode ? "Cancel New Entry" : "New Entry"}</NavItem>
+      <NavItem onClick={handleLogout}>Logout</NavItem>
   </Nav>
 );
 
@@ -52,4 +53,8 @@ function handleReset() {
 
 function handleAddEntry() {
   actions.toggleNewEntryMode();
+}
+
+function handleLogout() {
+  actions.logout();
 }

@@ -23,13 +23,6 @@ export default class AuthService {
     this.setToken(authResult.idToken)
     // navigate to the home route
     browserHistory.replace('/home')
-    this.lock.getProfile(authResult.idToken, (error, profile) => {
-        if (error) {
-            console.log('Error loading the Profile', error);
-        } else {
-            console.log(profile);
-        }
-    })
   }
 
   login() {
@@ -55,5 +48,6 @@ export default class AuthService {
   logout() {
     // Clear user token and profile data from local storage
     localStorage.removeItem('id_token');
+    browserHistory.replace('/login');
   }
 }

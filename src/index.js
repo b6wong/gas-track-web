@@ -4,8 +4,7 @@ import { Provider } from 'mobx-react';
 import { Router, Route, IndexRedirect, browserHistory } from 'react-router';
 import App from './components/App';
 import * as stores from './stores';
-import Container from './components/Container';
-import AuthService from './utils/AuthService';
+//import Container from './components/Container';
 import Login from './components/Login';
 
 import {useStrict} from 'mobx';
@@ -14,12 +13,11 @@ import injectTapEventPlugin from 'react-tap-event-plugin';
 injectTapEventPlugin();
 useStrict(true);
 
-const auth = new AuthService('vC4jjIJHyTK5PIortJYRIHa1iM8f3Pjm', 'b6wong.auth0.com');
+const {sessionStore} = stores;
 
 // validate authentication for private routes
 const requireAuth = (nextState, replace) => {
-  if (!auth.loggedIn()) {
-    console.log("user not logged in");
+  if (!sessionStore.getAuth().loggedIn()) {
     replace({ pathname: '/login' })
   }
 }
@@ -27,7 +25,7 @@ const requireAuth = (nextState, replace) => {
 ReactDOM.render(
   <Provider { ...stores }>
     <Router history={browserHistory}>
-      <Route path='/' component={Container} auth={auth}>
+      <Route path='/' auth={sessionStore.getAuth()}>
         <IndexRedirect to="/home" />
         <Route path="home" component={App} onEnter={requireAuth} />
         <Route path="login" component={Login} />
