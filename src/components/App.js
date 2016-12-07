@@ -5,12 +5,12 @@ import GasLog from './GasLog';
 import VehiclesList from './VehiclesList';
 import { Navbar, Nav, NavItem } from 'react-bootstrap';
 
-@inject('gasLogStore') @observer
+@inject('gasLogStore', 'sessionStore') @observer
 export default class App extends React.Component {
 
   render() {
 
-    const { gasLogStore } = this.props;
+    const { gasLogStore, sessionStore } = this.props;
 
     return (
 
@@ -23,7 +23,11 @@ export default class App extends React.Component {
             <Navbar.Toggle />
           </Navbar.Header>
           <Navbar.Collapse>
-            { gasLogStore.isVehicleSelected() ? <LoggedMenu isNewEntryMode={ gasLogStore.isNewEntryMode() } /> : <div></div> }
+            <CustomMenu 
+              isVehicleSelected={gasLogStore.isVehicleSelected()}  
+              isNewEntryMode={gasLogStore.isNewEntryMode()}
+              isLoggedIn={sessionStore.loggedIn()}  
+            /> 
           </Navbar.Collapse>
         </Navbar>
         {
@@ -38,14 +42,24 @@ export default class App extends React.Component {
   }
 }
 
+function CustomMenu(props) {
+  if (props.isVehicleSelected) {
+    return (
+      <Nav pullRight>
+        <NavItem onClick={handleReset}>Return to Main</NavItem>
+        <NavItem onClick={handleAddEntry}>{ props.isNewEntryMode ? "Cancel New Entry" : "New Entry"}</NavItem>
+        { props.isLoggedIn ? <NavItem onClick={handleLogout}>Logout</NavItem> : <NavItem onClick={handleLogout}>Sign In</NavItem> }
+      </Nav>
+    );
+  } else {
+    return (
+      <Nav pullRight>
+        { props.isLoggedIn ? <NavItem onClick={handleLogout}>Logout</NavItem> : <NavItem onClick={handleLogout}>Sign In</NavItem> }
+      </Nav>
+    );
+  }
+}
 
-const LoggedMenu = (props) => (
-  <Nav pullRight>
-      <NavItem onClick={handleReset}>Return to Main</NavItem>
-      <NavItem onClick={handleAddEntry}>{ props.isNewEntryMode ? "Cancel New Entry" : "New Entry"}</NavItem>
-      <NavItem onClick={handleLogout}>Logout</NavItem>
-  </Nav>
-);
 
 function handleReset() {
   actions.clearGasLog();

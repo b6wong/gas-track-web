@@ -15,7 +15,7 @@ export class Login extends React.Component {
       <div>
         <h2>Login</h2>
         <ButtonToolbar>
-          <Button bsStyle="primary" onClick={sessionStore.getAuth().login.bind(this)}>Login</Button>
+          <Button bsStyle="primary" onClick={sessionStore.login.bind(this)}>Login</Button>
         </ButtonToolbar>
       </div>
     )
