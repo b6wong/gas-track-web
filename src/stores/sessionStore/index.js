@@ -12,7 +12,8 @@ class SessionStore {
                 redirect: false,
                 redirectUrl: `${window.location.origin}/login`,
                 responseType: 'token'
-            }
+            },
+            autoclose: true
         });
         // Add callback for lock 'authenticated' event
         this.lock.on('authenticated', this._doAuthentication.bind(this))
