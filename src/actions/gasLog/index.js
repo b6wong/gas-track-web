@@ -35,6 +35,7 @@ export function fetchVehicles() {
         {"id": "2", "description":"Car 2"},
         {"id": "7", "description":"Car 3"}
     ];
+    gasLogStore.reset();
     gasLogStore.mergeVehicles(data);
     gasLogStore.finishRequest();
 }
