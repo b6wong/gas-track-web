@@ -9,7 +9,8 @@ class SessionStore {
         // Configure auth0
         this.lock = new Auth0Lock('vC4jjIJHyTK5PIortJYRIHa1iM8f3Pjm', 'b6wong.auth0.com', {
             auth: {
-                redirectUrl: 'http://localhost:3000/login',
+                redirect: false,
+                redirectUrl: `${window.location.origin}/login`,
                 responseType: 'token'
             }
         });
@@ -22,6 +23,7 @@ class SessionStore {
     }
 
     _doAuthentication(authResult) {
+        console.log("_doAuthentication");
         this.setToken(authResult.idToken);
         browserHistory.replace('/home');
         // Async loads the user profile data
@@ -61,6 +63,7 @@ class SessionStore {
     }
 
     setToken(idToken) {
+        console.log("setToken");
         localStorage.setItem('id_token', idToken);
     }
 

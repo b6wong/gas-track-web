@@ -16,6 +16,17 @@ const {sessionStore} = stores;
 
 // validate authentication for private routes
 const requireAuth = (nextState, replace) => {
+  console.log("in requireAuth");
+  console.log(nextState.location);
+  console.log(nextState.location.hash);
+  if (nextState.location.hash) {
+    const hashString = nextState.location.hash;
+    const idString = '&id_token';
+    const firstIndex = hashString.indexOf(idString) + idString.length + 1;
+    const lastIndex = hashString.indexOf('&token_type=');
+    console.log(hashString.substring(firstIndex, lastIndex));
+    sessionStore.setToken(hashString.substring(firstIndex, lastIndex));
+  }
   if (!sessionStore.loggedIn()) {
     replace({ pathname: '/login' })
   } else {
