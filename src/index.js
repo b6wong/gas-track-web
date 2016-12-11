@@ -17,20 +17,25 @@ const {sessionStore} = stores;
 // validate authentication for private routes
 const requireAuth = (nextState, replace) => {
   console.log("in requireAuth");
+  
   console.log(nextState.location);
   console.log(nextState.location.hash);
-  if (nextState.location.hash) {
-    const hashString = nextState.location.hash;
-    const idString = '&id_token';
-    const firstIndex = hashString.indexOf(idString) + idString.length + 1;
-    const lastIndex = hashString.indexOf('&token_type=');
-    console.log(hashString.substring(firstIndex, lastIndex));
-    sessionStore.setToken(hashString.substring(firstIndex, lastIndex));
-  }
+  
   if (!sessionStore.loggedIn()) {
     replace({ pathname: '/login' })
   } else {
-    //console.log("user is already logged in... token is: ", sessionStore.getToken());
+    console.log("user is already logged in... token is: ", sessionStore.getToken());
+    
+  }
+}
+
+// OnEnter for callback url to parse access_token
+const parseAuthHash = (nextState, replace) => {
+  console.log("in parseAuthHash");
+  console.log(nextState.location);
+  if (nextState.location.hash) {
+    sessionStore.parseHash(nextState.location.hash)
+    replace({ pathname: '/' });
   }
 }
 
@@ -40,13 +45,10 @@ ReactDOM.render(
       <Route path='/' auth={sessionStore}>
         <IndexRedirect to="/home" />
         <Route path="home" component={App} onEnter={requireAuth} />
-        <Route path="login" component={Login} />
+        <Route path="login" component={Login} onEnter={parseAuthHash} />
       </Route>
     </Router>
   </Provider>,
   document.getElementById('root')
 );
 
-
-
- 

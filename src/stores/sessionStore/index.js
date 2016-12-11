@@ -1,4 +1,4 @@
-import Auth0Lock from 'auth0-lock';
+import Auth0 from 'auth0-js';
 import {browserHistory} from 'react-router'
 //import { observable, action } from 'mobx';
 //import { forEach } from 'lodash';
@@ -6,69 +6,47 @@ import {browserHistory} from 'react-router'
 class SessionStore {
 
     constructor() {
-        // Configure auth0
-        this.lock = new Auth0Lock('vC4jjIJHyTK5PIortJYRIHa1iM8f3Pjm', 'b6wong.auth0.com', {
-            auth: {
-                redirect: false,
-                redirectUrl: `${window.location.origin}/login`,
-                responseType: 'token'
-            },
-            autoclose: true
+        //Configure Auth0
+        this.auth0 = new Auth0({
+            clientID: 'vC4jjIJHyTK5PIortJYRIHa1iM8f3Pjm',
+            domain: 'b6wong.auth0.com',
+            callbackURL: `${window.location.origin}/login`,
+            callbackOnLocationHash: true
         });
-        // Add callback for lock 'authenticated' event
-        this.lock.on('authenticated', this._doAuthentication.bind(this))
-        // Add callback for lock 'authorization_error' event
-        this.lock.on('authorization_error', this._authorizationError.bind(this))
-        // binds login functions to keep this context
-        this.login = this.login.bind(this)
+        this.login = this.login.bind(this);
+        this.signup = this.signup.bind(this);
     }
 
-    _doAuthentication(authResult) {
-        console.log("_doAuthentication");
-        this.setToken(authResult.idToken);
-        browserHistory.replace('/home');
-        // Async loads the user profile data
-        this.lock.getProfile(authResult.idToken, (error, profile) => {
-            if (error) {
-                console.log('Error loading the Profile', error);
-            } else {
-                console.log(profile);
-            }
-        })
+    login(params, onError) {
+        //redirects the call to auth0 instance
+        this.auth0.login(params, onError);
     }
 
-    _authorizationError(error) {
-        console.log('Authorization error', error);
+    signup(params, onError) {
+        //redirects the call to auth0 instance
+        this.auth0.signup(params, onError);
     }
 
-    /*
-     setProfile(profile) {
-    // Saves profile data to local storage
-    localStorage.setItem('profile', JSON.stringify(profile))
-    // Triggers profile_updated event to update the UI
-    this.emit('profile_updated', profile)
-  }
-
-  getProfile() {
-    // Retrieves the profile data from local storage
-    const profile = localStorage.getItem('profile')
-    return profile ? JSON.parse(localStorage.profile) : {}
-  }*/
-
-    login() {
-        this.lock.show();
+    parseHash(hash) {
+        // uses auth0 parseHash method to extract data from url hash
+        const authResult = this.auth0.parseHash(hash)
+        if (authResult && authResult.idToken) {
+            this.setToken(authResult.idToken)
+        }
     }
 
     loggedIn() {
+        // Checks if there is a saved token and it's still valid
         return !!this.getToken();
     }
 
     setToken(idToken) {
-        console.log("setToken");
+        // Saves user token to local storage
         localStorage.setItem('id_token', idToken);
     }
 
     getToken() {
+        // Retrieves the user token from local storage
         return localStorage.getItem('id_token');
     }
 
