@@ -4,6 +4,7 @@ import { Provider } from 'mobx-react';
 import { Router, Route, IndexRedirect, browserHistory } from 'react-router';
 import App from './components/App';
 import * as stores from './stores';
+import * as actions from './actions/index';
 import Login from './components/Login';
 
 import {useStrict} from 'mobx';
@@ -16,25 +17,18 @@ const {sessionStore} = stores;
 
 // validate authentication for private routes
 const requireAuth = (nextState, replace) => {
-  console.log("in requireAuth");
-  
-  console.log(nextState.location);
-  console.log(nextState.location.hash);
-  
+
   if (!sessionStore.loggedIn()) {
     replace({ pathname: '/login' })
   } else {
-    console.log("user is already logged in... token is: ", sessionStore.getToken());
-    
+    console.log("user is already logged in... token is: ", sessionStore.getToken());    
   }
 }
 
 // OnEnter for callback url to parse access_token
 const parseAuthHash = (nextState, replace) => {
-  console.log("in parseAuthHash");
-  console.log(nextState.location);
   if (nextState.location.hash) {
-    sessionStore.parseHash(nextState.location.hash)
+    actions.parseHash(nextState.location.hash)
     replace({ pathname: '/' });
   }
 }

@@ -3,12 +3,15 @@ import { observer, inject } from 'mobx-react';
 import * as actions from '../actions/index';
 import {Table } from 'react-bootstrap';
 
-@inject('gasLogStore') @observer
+@inject('gasLogStore', 'sessionStore') @observer
 class VehiclesList extends React.Component {
 
+    /*
     componentDidMount() {
-        this.fetchVehicles();
+        const { sessionStore } = this.props;
+        this.fetchVehicles(sessionStore.getUserEmail());
     }
+    */
 
     fetchVehicles() {
         actions.fetchVehicles();

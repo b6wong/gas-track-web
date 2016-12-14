@@ -1,11 +1,19 @@
 import Auth0 from 'auth0-js';
 import {browserHistory} from 'react-router'
-//import { observable, action } from 'mobx';
+import { observable, action } from 'mobx';
 //import { forEach } from 'lodash';
+
 
 class SessionStore {
 
+    @observable userEmail;
+    @observable userName;
+
     constructor() {
+
+        this.userEmail = null;
+        this.userName = null;
+
         //Configure Auth0
         this.auth0 = new Auth0({
             clientID: 'vC4jjIJHyTK5PIortJYRIHa1iM8f3Pjm',
@@ -27,17 +35,29 @@ class SessionStore {
         this.auth0.signup(params, onError);
     }
 
-    parseHash(hash) {
+    @action parseHash(hash) {
         // uses auth0 parseHash method to extract data from url hash
         const authResult = this.auth0.parseHash(hash)
         if (authResult && authResult.idToken) {
             this.setToken(authResult.idToken)
+            this.auth0.getProfile(authResult.idToken, (err, profile) => {
+                if (err) {
+                    console.log('error getting profile: ', err);
+                } else {
+                    this.setProfile(profile);
+                }
+            });
+
         }
     }
 
     loggedIn() {
         // Checks if there is a saved token and it's still valid
         return !!this.getToken();
+    }
+
+    getAuth0() {
+        return this.auth0;
     }
 
     setToken(idToken) {
@@ -50,8 +70,31 @@ class SessionStore {
         return localStorage.getItem('id_token');
     }
 
-    logout() {
+    @action setProfile(profile) {
+        this.userEmail = profile.email;
+        this.userName = profile.name;
+        console.log(this.userEmail);
+        console.log(this.userName);
+        localStorage.setItem('profile', profile);
+    }
+
+    getProfile() {
+        return localStorage.getItme('profile');
+    }
+
+    getUserEmail() {
+        return this.userEmail;
+    }
+
+    getUserName() {
+        return this.userName;
+    }
+
+    @action logout() {
+        this.userEmail = null;
+        this.userName = null;
         localStorage.removeItem('id_token');
+        localStorage.removeItem('profile');
         browserHistory.replace('/login');
     }
 

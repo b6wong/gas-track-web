@@ -14,6 +14,15 @@ export class Login extends React.Component {
     });
   }
 
+  facebookLogin() {
+    const {sessionStore} = this.props;
+    sessionStore.login({
+      connection: 'facebook'
+    }, function(err) {
+      if (err) alert("something went wrong: " + err.message);
+    });
+  }
+
   render() {
 
     return (
@@ -21,6 +30,7 @@ export class Login extends React.Component {
         <h2>Login</h2>
           <ButtonToolbar>
             <Button bsStyle="link" onClick={this.googleLogin.bind(this)}>Login with Google</Button>
+            <Button bsStyle="link" onClick={this.facebookLogin.bind(this)}>Login with Facebook</Button>
           </ButtonToolbar>
         
       </div>

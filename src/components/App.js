@@ -18,7 +18,7 @@ export default class App extends React.Component {
         <Navbar collapseOnSelect>
           <Navbar.Header>
             <Navbar.Brand>
-              Gas Log
+              Gas Log - {sessionStore.getUserName()}
             </Navbar.Brand>
             <Navbar.Toggle />
           </Navbar.Header>

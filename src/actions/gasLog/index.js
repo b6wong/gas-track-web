@@ -26,10 +26,21 @@ export function fetchGasLogByVehicle(vehicleId) {
         });
 }
 
-export function fetchVehicles() {
+export function fetchVehicles(email) {
+    const initUrl = 'vehicles/' + email;
+    const url = '//gas-track-server.herokuapp.com/' + initUrl;
 
     gasLogStore.startRequest();
 
+    return fetch(url)
+        .then(response => response.json())
+        .then(data => {
+            gasLogStore.reset();
+            gasLogStore.mergeVehicles(data);
+            gasLogStore.finishRequest();
+        })
+    
+    /*
     const data = [
         {"id": "1", "description":"2017 VW Tiguan"},
         {"id": "2", "description":"Car 2"},
@@ -38,6 +49,7 @@ export function fetchVehicles() {
     gasLogStore.reset();
     gasLogStore.mergeVehicles(data);
     gasLogStore.finishRequest();
+    */
 }
 
 export function addNewEntry(odometer, volume, octane, cost, isFillUp, tireType) {
