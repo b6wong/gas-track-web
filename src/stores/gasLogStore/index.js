@@ -19,7 +19,7 @@ class GasLogStore {
 
     @action reset = () => {
         this.gasLogs = [];
-        this.vehicles = [];
+        //this.vehicles = [];
         this.selectedVehicle = null;
         this.newEntryMode = false;
         this.numberOfPendingRequests = 0;
