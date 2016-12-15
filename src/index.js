@@ -22,7 +22,6 @@ const requireAuth = (nextState, replace) => {
     replace({ pathname: '/login' })
   } else {
     actions.setProfileFromLocal();
-    actions.fetchVehicles(sessionStore.getUserEmail());
   }
 }
 

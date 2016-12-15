@@ -1,7 +1,8 @@
 import sessionStore from '../../stores/sessionStore';
-import { fetchVehicles } from '../../actions/gasLog';
+import { clearGasLog, fetchVehicles } from '../../actions/gasLog';
 
 export function logout() {
+    clearGasLog();
     sessionStore.logout();
 }
 
@@ -24,4 +25,5 @@ export function parseHash(hash) {
 
 export function setProfileFromLocal() {
     sessionStore.setProfileFromLocal();
+    fetchVehicles(sessionStore.getUserEmail());
 }

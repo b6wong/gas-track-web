@@ -93,7 +93,8 @@ class SessionStore {
         this.userEmail = null;
         this.userName = null;
         localStorage.removeItem('id_token');
-        localStorage.removeItem('profile');
+        localStorage.removeItem('userEmail');
+        localStorage.removeItem('userName');
         browserHistory.replace('/login');
     }
 
