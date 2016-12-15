@@ -6,9 +6,7 @@ export function logout() {
 }
 
 export function parseHash(hash) {
-    
     const auth0 = sessionStore.getAuth0();
-
     // uses auth0 parseHash method to extract data from url hash
     const authResult = auth0.parseHash(hash)
     if (authResult && authResult.idToken) {
@@ -21,7 +19,9 @@ export function parseHash(hash) {
                 fetchVehicles(profile.email);
             }
         });
-
     }
+}
 
+export function setProfileFromLocal() {
+    sessionStore.setProfileFromLocal();
 }

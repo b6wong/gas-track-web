@@ -47,8 +47,12 @@ class SessionStore {
                     this.setProfile(profile);
                 }
             });
-
         }
+    }
+
+    @action setProfileFromLocal() {
+        this.userEmail = localStorage.getItem('userEmail');
+        this.userName = localStorage.getItem('userName');
     }
 
     loggedIn() {
@@ -73,13 +77,8 @@ class SessionStore {
     @action setProfile(profile) {
         this.userEmail = profile.email;
         this.userName = profile.name;
-        console.log(this.userEmail);
-        console.log(this.userName);
-        localStorage.setItem('profile', profile);
-    }
-
-    getProfile() {
-        return localStorage.getItme('profile');
+        localStorage.setItem('userEmail', profile.email);
+        localStorage.setItem('userName', profile.name);
     }
 
     getUserEmail() {

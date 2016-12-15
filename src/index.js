@@ -21,7 +21,8 @@ const requireAuth = (nextState, replace) => {
   if (!sessionStore.loggedIn()) {
     replace({ pathname: '/login' })
   } else {
-    console.log("user is already logged in... token is: ", sessionStore.getToken());    
+    actions.setProfileFromLocal();
+    actions.fetchVehicles(sessionStore.getUserEmail());
   }
 }
 
