@@ -1,22 +1,38 @@
-// src/views/Main/Login/Login.js
-
 import React from 'react'
-import {ButtonToolbar, Button} from 'react-bootstrap'
+import {Button, ButtonToolbar} from 'react-bootstrap'
 import {inject} from 'mobx-react'
 
 @inject('sessionStore')
 export class Login extends React.Component {
 
-  render() {
-
+  googleLogin() {
     const {sessionStore} = this.props;
+    sessionStore.login({
+      connection: 'google-oauth2'
+    }, function(err) {
+      if (err) alert("something went wrong: " + err.message);
+    });
+  }
+
+  facebookLogin() {
+    const {sessionStore} = this.props;
+    sessionStore.login({
+      connection: 'facebook'
+    }, function(err) {
+      if (err) alert("something went wrong: " + err.message);
+    });
+  }
+
+  render() {
 
     return (
       <div>
         <h2>Login</h2>
-        <ButtonToolbar>
-          <Button bsStyle="primary" onClick={sessionStore.login.bind(this)}>Login</Button>
-        </ButtonToolbar>
+          <ButtonToolbar>
+            <Button bsStyle="link" onClick={this.googleLogin.bind(this)}>Login with Google</Button>
+            <Button bsStyle="link" onClick={this.facebookLogin.bind(this)}>Login with Facebook</Button>
+          </ButtonToolbar>
+        
       </div>
     )
   }

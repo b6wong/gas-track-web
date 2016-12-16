@@ -1,5 +1,5 @@
-import { clearGasLog, fetchGasLogByVehicle, fetchVehicles, selectVehicle, toggleNewEntryMode, addNewEntry } from './gasLog';
-import { logout } from './session';
+import { clearGasLog, fetchGasLogByVehicle, fetchVehicles, selectVehicle, toggleNewEntryMode, toggleNewVehicleMode, addNewEntry, addNewVehicle } from './gasLog';
+import { logout, parseHash, setProfileFromLocal } from './session';
 
 export {
     clearGasLog,
@@ -7,7 +7,11 @@ export {
     fetchVehicles,
     selectVehicle,
     toggleNewEntryMode,
+    toggleNewVehicleMode,
     addNewEntry,
+    addNewVehicle,
 
-    logout
+    logout,
+    parseHash,
+    setProfileFromLocal
 };

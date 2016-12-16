@@ -18,7 +18,7 @@ export default class App extends React.Component {
         <Navbar collapseOnSelect>
           <Navbar.Header>
             <Navbar.Brand>
-              Gas Log
+              Gas Log - {sessionStore.getUserName()}
             </Navbar.Brand>
             <Navbar.Toggle />
           </Navbar.Header>
@@ -26,6 +26,7 @@ export default class App extends React.Component {
             <CustomMenu 
               isVehicleSelected={gasLogStore.isVehicleSelected()}  
               isNewEntryMode={gasLogStore.isNewEntryMode()}
+              isNewVehicleMode={gasLogStore.isNewVehicleMode()}
               isLoggedIn={sessionStore.loggedIn()}  
             /> 
           </Navbar.Collapse>
@@ -54,6 +55,7 @@ function CustomMenu(props) {
   } else {
     return (
       <Nav pullRight>
+        <NavItem onClick={handleAddVehicle}>{ props.isNewVehicleMode ? "Canel New Vehicle" : "New Vehicle"}</NavItem>
         { props.isLoggedIn ? <NavItem onClick={handleLogout}>Logout</NavItem> : <NavItem onClick={handleLogout}>Sign In</NavItem> }
       </Nav>
     );
@@ -67,6 +69,10 @@ function handleReset() {
 
 function handleAddEntry() {
   actions.toggleNewEntryMode();
+}
+
+function handleAddVehicle() {
+  actions.toggleNewVehicleMode();
 }
 
 function handleLogout() {

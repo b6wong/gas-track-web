@@ -1,4 +1,5 @@
 import gasLogStore from '../../stores/gasLogStore';
+import sessionStore from '../../stores/sessionStore';
 
 export function clearGasLog() {
     gasLogStore.reset();
@@ -10,6 +11,10 @@ export function selectVehicle(vehicleId) {
 
 export function toggleNewEntryMode() {
     gasLogStore.toggleNewEntryMode();
+}
+
+export function toggleNewVehicleMode() {
+    gasLogStore.toggleNewVehicleMode();
 }
 
 export function fetchGasLogByVehicle(vehicleId) {
@@ -26,18 +31,19 @@ export function fetchGasLogByVehicle(vehicleId) {
         });
 }
 
-export function fetchVehicles() {
+export function fetchVehicles(email) {
+    const initUrl = 'vehicles/' + email;
+    const url = '//gas-track-server.herokuapp.com/' + initUrl;
 
     gasLogStore.startRequest();
 
-    const data = [
-        {"id": "1", "description":"2017 VW Tiguan"},
-        {"id": "2", "description":"Car 2"},
-        {"id": "7", "description":"Car 3"}
-    ];
-    gasLogStore.reset();
-    gasLogStore.mergeVehicles(data);
-    gasLogStore.finishRequest();
+    return fetch(url)
+        .then(response => response.json())
+        .then(data => {
+            gasLogStore.reset();
+            gasLogStore.mergeVehicles(data);
+            gasLogStore.finishRequest();
+        })
 }
 
 export function addNewEntry(odometer, volume, octane, cost, isFillUp, tireType) {
@@ -74,3 +80,30 @@ export function addNewEntry(odometer, volume, octane, cost, isFillUp, tireType) 
     });
 }
 
+export function addNewVehicle(vehicleName, odometer) {
+    const initUrl = 'vehicle';
+    const url = '//gas-track-server.herokuapp.com/' + initUrl;
+    const data = 
+        {
+        "email": sessionStore.getUserEmail(),    
+        "description": vehicleName,
+        "odometer": odometer
+        };
+
+    return fetch(url, {
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        method: "POST",
+        body: JSON.stringify(data)
+    })
+    .then(response => response.json())
+    .then(responseJson => {
+        gasLogStore.mergeVehicles([responseJson]);
+        gasLogStore.toggleNewVehicleMode();
+    })
+    .catch(err => {
+        console.log(err);
+    });
+}

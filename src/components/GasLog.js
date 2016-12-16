@@ -39,6 +39,7 @@ const log = (type) => console.log.bind(console, type);
 @inject('gasLogStore') @observer
 class GasLog extends React.Component {
 
+    // [TODO] -- Should this really be here???  or should it be done when the vehicle is selected?
     componentDidMount() {
         const { gasLogStore } = this.props;
         if (gasLogStore.getGasLogs().length === 0) {
