@@ -26,6 +26,7 @@ export default class App extends React.Component {
             <CustomMenu 
               isVehicleSelected={gasLogStore.isVehicleSelected()}  
               isNewEntryMode={gasLogStore.isNewEntryMode()}
+              isNewVehicleMode={gasLogStore.isNewVehicleMode()}
               isLoggedIn={sessionStore.loggedIn()}  
             /> 
           </Navbar.Collapse>
@@ -54,7 +55,7 @@ function CustomMenu(props) {
   } else {
     return (
       <Nav pullRight>
-        <NavItem onClick={handleAddVehicle}>New Vehicle</NavItem>
+        <NavItem onClick={handleAddVehicle}>{ props.isNewVehicleMode ? "Canel New Vehicle" : "New Vehicle"}</NavItem>
         { props.isLoggedIn ? <NavItem onClick={handleLogout}>Logout</NavItem> : <NavItem onClick={handleLogout}>Sign In</NavItem> }
       </Nav>
     );

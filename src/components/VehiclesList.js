@@ -21,13 +21,6 @@ const log = (type) => console.log.bind(console, type);
 @inject('gasLogStore', 'sessionStore') @observer
 class VehiclesList extends React.Component {
 
-    /*
-    componentDidMount() {
-        const { sessionStore } = this.props;
-        this.fetchVehicles(sessionStore.getUserEmail());
-    }
-    */
-
     fetchVehicles() {
         actions.fetchVehicles();
     }
@@ -36,18 +29,11 @@ class VehiclesList extends React.Component {
         actions.selectVehicle(vehicleId);
     }
 
-    handleSubmitNewVehicleEntry = (obj) => {
-        console.log(obj);
-        /*
-        actions.addNewEntry(
-            obj.formData.odometer, 
-            obj.formData.volume, 
-            obj.formData.octane,
-            obj.formData.cost,
-            obj.formData.fillUp,
-            obj.formData.tireType
+    handleSubmitNewVehicle = (obj) => {
+        actions.addNewVehicle(
+            obj.formData.vehicleName,
+            obj.formData.odometer
             );
-        */
     }
 
     render() {
@@ -68,35 +54,11 @@ class VehiclesList extends React.Component {
             );
         }
 
-/*
-        return (
-            <Table responsive>
-                <thead>
-                    <tr>
-                        <th>Id</th>
-                        <th>Vehicle</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {
-                        gasLogStore.getVehicles().map(
-                            (vehicle, idx) => 
-                                <tr key={idx} data-href={idx} onClick={() => this.handleSelectVehicle(vehicle.id)}> 
-                                    <td>{ vehicle.id }</td>
-                                    <td>{ vehicle.description }</td>
-                                </tr>
-                        )
-                    }
-                </tbody>
-            </Table>
-        );
-*/
-
         return (
 
             gasLogStore.isNewVehicleMode() ? 
                 <Form schema={schema}
-                    onSubmit={this.handleSubmitNewVehicleEntry}
+                    onSubmit={this.handleSubmitNewVehicle}
                     onError={log("errors")} /> :
                 <Table responsive>
                     <thead>

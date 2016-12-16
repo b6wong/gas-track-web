@@ -1,4 +1,5 @@
 import gasLogStore from '../../stores/gasLogStore';
+import sessionStore from '../../stores/sessionStore';
 
 export function clearGasLog() {
     gasLogStore.reset();
@@ -79,3 +80,30 @@ export function addNewEntry(odometer, volume, octane, cost, isFillUp, tireType) 
     });
 }
 
+export function addNewVehicle(vehicleName, odometer) {
+    const initUrl = 'vehicle';
+    const url = '//gas-track-server.herokuapp.com/' + initUrl;
+    const data = 
+        {
+        "email": sessionStore.getUserEmail(),    
+        "description": vehicleName,
+        "odometer": odometer
+        };
+
+    return fetch(url, {
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        method: "POST",
+        body: JSON.stringify(data)
+    })
+    .then(response => response.json())
+    .then(responseJson => {
+        gasLogStore.mergeVehicles([responseJson]);
+        gasLogStore.toggleNewVehicleMode();
+    })
+    .catch(err => {
+        console.log(err);
+    });
+}
