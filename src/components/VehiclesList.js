@@ -2,7 +2,21 @@ import React from 'react';
 import { observer, inject } from 'mobx-react';
 import * as actions from '../actions/index';
 import {Table, Grid, Row, Col } from 'react-bootstrap';
+import Form from 'react-jsonschema-form';
 import Loading from 'react-loading';
+
+
+const schema = {
+  title: "New Vehicle",
+  type: "object",
+  required: ["vehicleName", "odometer"],
+  properties: {
+    vehicleName: {type: "string", title: "Vehicle Name"},
+    odometer: {type: "number", title: "Odometer"}
+  }
+};
+
+const log = (type) => console.log.bind(console, type);
 
 @inject('gasLogStore', 'sessionStore') @observer
 class VehiclesList extends React.Component {
@@ -20,6 +34,20 @@ class VehiclesList extends React.Component {
 
     handleSelectVehicle(vehicleId) {
         actions.selectVehicle(vehicleId);
+    }
+
+    handleSubmitNewVehicleEntry = (obj) => {
+        console.log(obj);
+        /*
+        actions.addNewEntry(
+            obj.formData.odometer, 
+            obj.formData.volume, 
+            obj.formData.octane,
+            obj.formData.cost,
+            obj.formData.fillUp,
+            obj.formData.tireType
+            );
+        */
     }
 
     render() {
@@ -40,6 +68,7 @@ class VehiclesList extends React.Component {
             );
         }
 
+/*
         return (
             <Table responsive>
                 <thead>
@@ -61,6 +90,37 @@ class VehiclesList extends React.Component {
                 </tbody>
             </Table>
         );
+*/
+
+        return (
+
+            gasLogStore.isNewVehicleMode() ? 
+                <Form schema={schema}
+                    onSubmit={this.handleSubmitNewVehicleEntry}
+                    onError={log("errors")} /> :
+                <Table responsive>
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Vehicle</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {
+                            gasLogStore.getVehicles().map(
+                                (vehicle, idx) => 
+                                    <tr key={idx} data-href={idx} onClick={() => this.handleSelectVehicle(vehicle.id)}> 
+                                        <td>{ vehicle.id }</td>
+                                        <td>{ vehicle.description }</td>
+                                    </tr>
+                            )
+                        }
+                    </tbody>
+                </Table>
+        );
+
+
+
     }
 
 }

@@ -54,6 +54,7 @@ function CustomMenu(props) {
   } else {
     return (
       <Nav pullRight>
+        <NavItem onClick={handleAddVehicle}>New Vehicle</NavItem>
         { props.isLoggedIn ? <NavItem onClick={handleLogout}>Logout</NavItem> : <NavItem onClick={handleLogout}>Sign In</NavItem> }
       </Nav>
     );
@@ -67,6 +68,10 @@ function handleReset() {
 
 function handleAddEntry() {
   actions.toggleNewEntryMode();
+}
+
+function handleAddVehicle() {
+  actions.toggleNewVehicleMode();
 }
 
 function handleLogout() {
