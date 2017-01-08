@@ -86,6 +86,46 @@ class GasLogStore {
         return this.numberOfPendingRequests;
     }
 
+    getCalculatedLog() {
+        
+        let calculatedLog = [];
+        let calculatedEntry = null;
+        let previousEntry = null;
+
+        for (const entry of this.gasLogs) {
+            if (!calculatedEntry) {
+                calculatedEntry = {};
+                calculatedEntry.timestamp = null;
+                calculatedEntry.previousOdometer = 0;
+                calculatedEntry.currentOdometer = 0;
+                calculatedEntry.distance = 0;
+                calculatedEntry.cost = 0;
+                calculatedEntry.volume = 0;
+                calculatedEntry.efficiency = 0;
+                calculatedEntry.tireType = null;
+                if (previousEntry) {
+                    calculatedEntry.previousOdometer = previousEntry.currentOdometer;
+                }
+            }
+            if (entry.isFillUp) {
+                calculatedEntry.timestamp = entry.dateTime;
+                calculatedEntry.distance += entry.odometer - calculatedEntry.previousOdometer;
+                calculatedEntry.currentOdometer = entry.odometer;
+                calculatedEntry.cost += entry.cost;
+                calculatedEntry.volume += entry.volume;
+                calculatedEntry.efficiency = (calculatedEntry.volume / calculatedEntry.distance) * 100;
+                calculatedEntry.tireType = entry.tireType;
+                calculatedLog.push(calculatedEntry);
+                previousEntry = calculatedEntry;
+                calculatedEntry = null;
+            } else {
+                calculatedEntry.cost += entry.cost;
+                calculatedEntry.volume += entry.volume;
+            }
+        }
+        return calculatedLog;
+    }
+
 }
 
 const gasLogStore = new GasLogStore();

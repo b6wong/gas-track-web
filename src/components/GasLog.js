@@ -65,7 +65,8 @@ class GasLog extends React.Component {
     render() {
 
         const { gasLogStore } = this.props;
-        
+        const calculatedLog = gasLogStore.getCalculatedLog();
+
         if (gasLogStore.getNumberOfPendingRequests() > 0) {
             return (
                 <Grid fluid={true}>
@@ -87,33 +88,72 @@ class GasLog extends React.Component {
                 <Form schema={schema}
                     onSubmit={this.handleSubmitNewEntry}
                     onError={log("errors")} /> :
-                <Table>
-                    <thead>
-                        <tr>
-                            <th>Date</th>
-                            <th>(km)</th>
-                            <th>(L)</th>
-                            <th>Fill Up?</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {
-                            gasLogStore.getGasLogs().map(
-                                (gasLog, idx) => 
-                                    <tr key={idx}> 
-                                        <td>{ dateFormat(gasLog.dateTime) }</td>
-                                        <td>{ gasLog.odometer }</td>
-                                        <td>{ gasLog.volume }</td>
-                                        <td>{ gasLog.isFillUp ? "Y" : "N"}</td>
-                                    </tr>
-                            )
-                        }
-                    </tbody>
-                </Table>
+                <div>
+                    <Table>
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>(km)</th>
+                                <th>(L)</th>
+                                <th>Fill Up?</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {
+                                gasLogStore.getGasLogs().map(
+                                    (gasLog, idx) => 
+                                        <tr key={idx}> 
+                                            <td>{ dateFormat(gasLog.dateTime) }</td>
+                                            <td>{ gasLog.odometer }</td>
+                                            <td>{ gasLog.volume }</td>
+                                            <td>{ gasLog.isFillUp ? "Y" : "N"}</td>
+                                        </tr>
+                                )
+                            }
+                        </tbody>
+                    </Table>
+                    <Table>
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>(km)</th>
+                                <th>(L)</th>
+                                <th>($)</th>
+                                <th>(L/100km)</th>
+                                
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {
+                                calculatedLog.map(
+                                    (log, idx) => 
+                                        <tr key={idx}> 
+                                            <td>{ dateFormat(log.timestamp) }</td>
+                                            <td>{ log.distance }</td>
+                                            <td>{ log.volume }</td>
+                                            <td>{ log.cost }</td>
+                                            <td>{ log.efficiency}</td>
+                                            
+                                        </tr>
+                                )
+                            }
+                        </tbody>
+                    </Table>
+                </div>
         );
     }
 
 }
+/*
+cost:65.55
+currentOdometer:5588
+distance:451
+efficiency:11.36319290465632
+previousOdometer:5137
+timestamp:1482516322301
+tireType:"W"
+volume:51.248
+*/
 
 function dateFormat(date) {
     var d = new Date(date);
