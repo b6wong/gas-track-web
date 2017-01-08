@@ -21,13 +21,13 @@ export function fetchGasLogByVehicle(vehicleId) {
     const initUrl = 'gasLogs/' + vehicleId;
     const url = '//gas-track-server.herokuapp.com/' + initUrl;
 
-    gasLogStore.startRequest();
+    sessionStore.startRequest();
 
     return fetch(url)
         .then(response => response.json())
         .then(data => {
             gasLogStore.mergeGasLogs(data);
-            gasLogStore.finishRequest();
+            sessionStore.finishRequest();
         });
 }
 
@@ -35,14 +35,14 @@ export function fetchVehicles(email) {
     const initUrl = 'vehicles/' + email;
     const url = '//gas-track-server.herokuapp.com/' + initUrl;
 
-    gasLogStore.startRequest();
+    sessionStore.startRequest();
 
     return fetch(url)
         .then(response => response.json())
         .then(data => {
             gasLogStore.reset();
             gasLogStore.mergeVehicles(data);
-            gasLogStore.finishRequest();
+            sessionStore.finishRequest();
         })
 }
 

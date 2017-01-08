@@ -4,6 +4,8 @@ import * as actions from '../actions/index';
 import GasLog from './GasLog';
 import VehiclesList from './VehiclesList';
 import { Navbar, Nav, NavItem } from 'react-bootstrap';
+import {Grid, Row, Col } from 'react-bootstrap';
+import Loading from 'react-loading';
 
 @inject('gasLogStore', 'sessionStore') @observer
 export default class App extends React.Component {
@@ -31,11 +33,10 @@ export default class App extends React.Component {
             /> 
           </Navbar.Collapse>
         </Navbar>
-        {
-          gasLogStore.isVehicleSelected() ?
-            <GasLog /> :
-            <VehiclesList />
-        }
+        <CustomContent
+          numberOfPendingRequests={sessionStore.getNumberOfPendingRequests()}
+          isVehicleSelected={gasLogStore.isVehicleSelected()}
+        />
       </div>
 
     );
@@ -60,6 +61,31 @@ function CustomMenu(props) {
       </Nav>
     );
   }
+}
+
+function CustomContent(props) {
+  const { numberOfPendingRequests, isVehicleSelected } = props;
+        
+  if (numberOfPendingRequests > 0) {
+      return (
+          <Grid fluid={true}>
+              <Row>
+                  <Col xs={5} md={5}></Col>
+                  <Col md={2} xs={2}>
+                      <Loading type='bubbles' color='#999999' />
+                  </Col>
+                  <Col xs={5} md={5}></Col>
+              </Row>
+          </Grid>
+      );
+  }
+
+  if (isVehicleSelected) {
+    return <GasLog />;
+  } else {
+    return <VehiclesList />;
+  }
+
 }
 
 

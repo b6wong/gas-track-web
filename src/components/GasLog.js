@@ -1,10 +1,8 @@
 import React from 'react';
 import { observer, inject } from 'mobx-react';
 import * as actions from '../actions/index';
-import {Table, Grid, Row, Col } from 'react-bootstrap';
+import {Table } from 'react-bootstrap';
 import Form from 'react-jsonschema-form';
-
-import Loading from 'react-loading';
 
 var moment = require('moment');
 
@@ -66,21 +64,6 @@ class GasLog extends React.Component {
 
         const { gasLogStore } = this.props;
         const calculatedLog = gasLogStore.getCalculatedLog();
-
-        if (gasLogStore.getNumberOfPendingRequests() > 0) {
-            return (
-                <Grid fluid={true}>
-                    <Row>
-                        <Col xs={5} md={5}></Col>
-                        <Col md={2} xs={2}>
-                            <Loading type='bubbles' color='#999999' />
-                        </Col>
-                        <Col xs={5} md={5}></Col>
-                    </Row>
-                </Grid>
-            );
-        }
-
 
         return (
 

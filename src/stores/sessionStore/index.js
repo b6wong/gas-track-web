@@ -8,11 +8,13 @@ class SessionStore {
 
     @observable userEmail;
     @observable userName;
+    @observable numberOfPendingRequests;
 
     constructor() {
 
         this.userEmail = null;
         this.userName = null;
+        this.numberOfPendingRequests = 0;
 
         //Configure Auth0
         this.auth0 = new Auth0({
@@ -33,6 +35,20 @@ class SessionStore {
     signup(params, onError) {
         //redirects the call to auth0 instance
         this.auth0.signup(params, onError);
+    }
+
+    @action startRequest = () => {
+        this.numberOfPendingRequests++;
+    }
+
+    @action finishRequest = () => {
+        if (this.numberOfPendingRequests > 0){
+            this.numberOfPendingRequests--;
+        }
+    }
+
+    getNumberOfPendingRequests() {
+        return this.numberOfPendingRequests;
     }
 
     @action parseHash(hash) {
