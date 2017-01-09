@@ -4,6 +4,7 @@ import * as actions from '../actions/index';
 import {Table } from 'react-bootstrap';
 import Form from 'react-jsonschema-form';
 
+
 const schema = {
   title: "New Vehicle",
   type: "object",

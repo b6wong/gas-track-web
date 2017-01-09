@@ -29,7 +29,11 @@ export class Login extends React.Component {
       <div>
         <h2>Login</h2>
           <ButtonToolbar>
-            <Button bsStyle="link" onClick={this.googleLogin.bind(this)}>Login with Google</Button>
+            <button className="auth0-lock-social-button auth0-lock-social-big-button" onClick={this.googleLogin.bind(this)} data-provider="google-oauth2" type="button">
+              <div className="auth0-lock-social-button-icon"></div>
+              <div className="auth0-lock-social-button-text">Log in with Google</div>
+            </button>
+  
             <Button bsStyle="link" onClick={this.facebookLogin.bind(this)}>Login with Facebook</Button>
           </ButtonToolbar>
         

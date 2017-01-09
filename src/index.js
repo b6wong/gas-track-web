@@ -7,6 +7,8 @@ import * as stores from './stores';
 import * as actions from './actions/index';
 import Login from './components/Login';
 
+import './main.css';
+
 import {useStrict} from 'mobx';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 
