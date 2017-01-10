@@ -13,6 +13,7 @@ const schema = {
   properties: {
     odometer: {type: "number", title: "Odometer"},
     volume: {type: "number", title: "Volume"},
+    cost: {type: "number", title: "Cost"},
     octane: {
         type: "number",
         enum: [87, 89, 91, 94],
@@ -20,7 +21,6 @@ const schema = {
         title: "Octane",
         default: 91
     },
-    cost: {type: "number", title: "Cost"},
     fillUp: {type: "boolean", title: "Fill Up?", default: true},
     tireType: {
                 type: "string", 
@@ -37,7 +37,7 @@ const log = (type) => console.log.bind(console, type);
 @inject('gasLogStore') @observer
 class GasLog extends React.Component {
 
-    // [TODO] -- Should this really be here???  or should it be done when the vehicle is selected?
+    // [TODO] -- this should be done when the vehicle is selected from the actions
     componentDidMount() {
         const { gasLogStore } = this.props;
         if (gasLogStore.getGasLogs().length === 0) {
@@ -72,36 +72,12 @@ class GasLog extends React.Component {
                     onSubmit={this.handleSubmitNewEntry}
                     onError={log("errors")} /> :
                 <div>
-                    <Table>
+                    <Table responsive>
                         <thead>
                             <tr>
                                 <th>Date</th>
                                 <th>(km)</th>
                                 <th>(L)</th>
-                                <th>Fill Up?</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {
-                                gasLogStore.getGasLogs().map(
-                                    (gasLog, idx) => 
-                                        <tr key={idx}> 
-                                            <td>{ dateFormat(gasLog.dateTime) }</td>
-                                            <td>{ gasLog.odometer }</td>
-                                            <td>{ gasLog.volume }</td>
-                                            <td>{ gasLog.isFillUp ? "Y" : "N"}</td>
-                                        </tr>
-                                )
-                            }
-                        </tbody>
-                    </Table>
-                    <Table>
-                        <thead>
-                            <tr>
-                                <th>Date</th>
-                                <th>(km)</th>
-                                <th>(L)</th>
-                                <th>($)</th>
                                 <th>(L/100km)</th>
                                 
                             </tr>
@@ -113,10 +89,8 @@ class GasLog extends React.Component {
                                         <tr key={idx}> 
                                             <td>{ dateFormat(log.timestamp) }</td>
                                             <td>{ log.distance }</td>
-                                            <td>{ log.volume }</td>
-                                            <td>{ log.cost }</td>
-                                            <td>{ log.efficiency}</td>
-                                            
+                                            <td>{ log.volume.toFixed(2) }</td>
+                                            <td>{ log.efficiency.toFixed(1)}</td>
                                         </tr>
                                 )
                             }
