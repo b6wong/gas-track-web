@@ -1,6 +1,7 @@
 import React from 'react'
-import {Button, ButtonToolbar} from 'react-bootstrap'
 import {inject} from 'mobx-react'
+import {Grid, Row, Col } from 'react-bootstrap';
+import FontAwesome from 'react-fontawesome';
 
 @inject('sessionStore')
 export class Login extends React.Component {
@@ -26,18 +27,30 @@ export class Login extends React.Component {
   render() {
 
     return (
-      <div>
-        <h2>Login</h2>
-          <ButtonToolbar>
-            <button className="auth0-lock-social-button auth0-lock-social-big-button" onClick={this.googleLogin.bind(this)} data-provider="google-oauth2" type="button">
-              <div className="auth0-lock-social-button-icon"></div>
-              <div className="auth0-lock-social-button-text">Log in with Google</div>
+      <div className="fullScreen">
+      <Grid fluid={true}>
+        <Row>
+          <Col xs={10} xsOffset={1} md={4} mdOffset={4} className="loginHeader">
+          
+            <h2>Log in</h2>
+          
+            <button className="btn-google" onClick={this.googleLogin.bind(this)}>
+              <FontAwesome 
+                name="google" 
+                className="icon-google"
+                />
             </button>
-  
-            <Button bsStyle="link" onClick={this.facebookLogin.bind(this)}>Login with Facebook</Button>
-          </ButtonToolbar>
-        
+            <button className="btn-facebook" onClick={this.facebookLogin.bind(this)}>
+              <FontAwesome 
+                name="facebook" 
+                className="icon-facebook"
+              />
+            </button>
+          </Col>
+        </Row>
+      </Grid>
       </div>
+
     )
   }
 }
