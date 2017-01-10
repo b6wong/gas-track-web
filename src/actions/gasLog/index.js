@@ -7,6 +7,9 @@ export function clearGasLog() {
 
 export function selectVehicle(vehicleId) {
     gasLogStore.selectVehicle(vehicleId);
+    if (gasLogStore.getGasLogs().length === 0) {
+        this.fetchGasLogByVehicle(vehicleId);
+    }
 }
 
 export function toggleNewEntryMode() {

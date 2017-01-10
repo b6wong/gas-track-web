@@ -37,14 +37,6 @@ const log = (type) => console.log.bind(console, type);
 @inject('gasLogStore') @observer
 class GasLog extends React.Component {
 
-    // [TODO] -- this should be done when the vehicle is selected from the actions
-    componentDidMount() {
-        const { gasLogStore } = this.props;
-        if (gasLogStore.getGasLogs().length === 0) {
-            this.fetchGasLogByVehicle(gasLogStore.getSelectedVehicle());
-        }
-    }
-
     fetchGasLogByVehicle(vehicleId) {
         actions.fetchGasLogByVehicle(vehicleId);
     }
