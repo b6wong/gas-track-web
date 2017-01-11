@@ -44,6 +44,7 @@ export function fetchVehicles(email) {
         .then(response => response.json())
         .then(data => {
             gasLogStore.reset();
+            gasLogStore.resetVehicles();
 
             // Temporary in place to show vehicle 1 as a demo vehicle
             let modifiedData = data;
@@ -55,7 +56,7 @@ export function fetchVehicles(email) {
                         "id": "1",
                         "description": "Demo Vehicle"
                     }
-                )
+                )    
             }
             gasLogStore.mergeVehicles(modifiedData);
             sessionStore.finishRequest();

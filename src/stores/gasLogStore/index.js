@@ -25,6 +25,10 @@ class GasLogStore {
         this.newVehicleMode = false;
     }
 
+    @action resetVehicles = () => {
+        this.vehicles = [];
+    }
+
     @action mergeGasLogs = (ids) => {
         forEach(ids, (id) => this.gasLogs.push(id));
     }
