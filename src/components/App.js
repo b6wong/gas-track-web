@@ -14,6 +14,9 @@ export default class App extends React.Component {
 
     const { gasLogStore, sessionStore } = this.props;
 
+    let disableNewEntry = false;
+    disableNewEntry = (gasLogStore.isVehicleSelected() && gasLogStore.getSelectedVehicle() === "1" && sessionStore.getUserEmail() !== 'b6wong@gmail.com');
+
     return (
 
       <div>
@@ -29,7 +32,8 @@ export default class App extends React.Component {
               isVehicleSelected={gasLogStore.isVehicleSelected()}  
               isNewEntryMode={gasLogStore.isNewEntryMode()}
               isNewVehicleMode={gasLogStore.isNewVehicleMode()}
-              isLoggedIn={sessionStore.loggedIn()}  
+              isLoggedIn={sessionStore.loggedIn()}
+              disableNewEntry={disableNewEntry}  
             /> 
           </Navbar.Collapse>
         </Navbar>
@@ -46,13 +50,22 @@ export default class App extends React.Component {
 
 function CustomMenu(props) {
   if (props.isVehicleSelected) {
-    return (
-      <Nav pullRight>
-        <NavItem onClick={handleReset}>Return to Main</NavItem>
-        <NavItem onClick={handleAddEntry}>{ props.isNewEntryMode ? "Cancel New Entry" : "New Entry"}</NavItem>
-        { props.isLoggedIn ? <NavItem onClick={handleLogout}>Logout</NavItem> : <NavItem onClick={handleLogout}>Sign In</NavItem> }
-      </Nav>
-    );
+    if (props.disableNewEntry) {
+      return (
+        <Nav pullRight>
+          <NavItem onClick={handleReset}>Return to Main</NavItem>
+          { props.isLoggedIn ? <NavItem onClick={handleLogout}>Logout</NavItem> : <NavItem onClick={handleLogout}>Sign In</NavItem> }
+        </Nav>
+      );
+    } else {
+      return (
+        <Nav pullRight>
+          <NavItem onClick={handleReset}>Return to Main</NavItem>
+          <NavItem onClick={handleAddEntry}>{ props.isNewEntryMode ? "Cancel New Entry" : "New Entry"}</NavItem>
+          { props.isLoggedIn ? <NavItem onClick={handleLogout}>Logout</NavItem> : <NavItem onClick={handleLogout}>Sign In</NavItem> }
+        </Nav>
+      );
+    }
   } else {
     return (
       <Nav pullRight>

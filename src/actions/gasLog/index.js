@@ -44,7 +44,20 @@ export function fetchVehicles(email) {
         .then(response => response.json())
         .then(data => {
             gasLogStore.reset();
-            gasLogStore.mergeVehicles(data);
+
+            // Temporary in place to show vehicle 1 as a demo vehicle
+            let modifiedData = data;
+            if (email !== 'b6wong@gmail.com') {
+                modifiedData.push(
+                    {
+                        "_id": "584e0acef1b6d91924a18490",
+                        "email": "b6wong@gmail.com",
+                        "id": "1",
+                        "description": "Demo Vehicle"
+                    }
+                )
+            }
+            gasLogStore.mergeVehicles(modifiedData);
             sessionStore.finishRequest();
         })
 }
