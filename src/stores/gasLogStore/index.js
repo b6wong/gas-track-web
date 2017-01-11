@@ -98,6 +98,7 @@ class GasLogStore {
                 calculatedEntry.volume += entry.volume;
                 calculatedEntry.efficiency = (calculatedEntry.volume / calculatedEntry.distance) * 100;
                 calculatedEntry.tireType = entry.tireType;
+                calculatedEntry.efficiency = parseFloat(calculatedEntry.efficiency.toFixed(1));
                 calculatedLog.push(calculatedEntry);
                 previousEntry = calculatedEntry;
                 calculatedEntry = null;

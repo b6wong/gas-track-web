@@ -1,10 +1,11 @@
 import React from 'react';
 import { observer, inject } from 'mobx-react';
 import * as actions from '../actions/index';
-import {Table } from 'react-bootstrap';
+import {Grid, Row, Col } from 'react-bootstrap';
 import Form from 'react-jsonschema-form';
+import ChartEfficiency from './ChartEfficiency';
 
-var moment = require('moment');
+//var moment = require('moment');
 
 const schema = {
   title: "New Entry",
@@ -55,9 +56,54 @@ class GasLog extends React.Component {
     render() {
 
         const { gasLogStore } = this.props;
-        const calculatedLog = gasLogStore.getCalculatedLog();
 
         return (
+            <Grid fluid={true}>
+                <Row>
+                    <Col xs={12} md={6} mdOffset={3}>
+                    
+                    <h1 className="centerContent">Fuel Efficiency</h1>
+                    <h1 className="centerContent">(L/100km)</h1>
+                    {
+                        gasLogStore.isNewEntryMode() ? 
+                        <Form schema={schema}
+                            onSubmit={this.handleSubmitNewEntry}
+                            onError={log("errors")} /> :
+                        <ChartEfficiency />
+                    }
+                    </Col>
+                </Row>
+            </Grid>
+        )
+
+    }
+
+}
+/*
+cost:65.55
+currentOdometer:5588
+distance:451
+efficiency:11.36319290465632
+previousOdometer:5137
+timestamp:1482516322301
+tireType:"W"
+volume:51.248
+*/
+
+/*
+function dateFormat(date) {
+    var d = new Date(date);
+    if (d.getFullYear() <= 2016 && d.getMonth() <= 2) return "n/a";
+    return moment(date).format('MMM Do YYYY');
+//    return d.toDateString();
+}
+*/
+
+export default GasLog;
+
+
+/*
+ return (
 
             gasLogStore.isNewEntryMode() ? 
                 <Form schema={schema}
@@ -90,25 +136,4 @@ class GasLog extends React.Component {
                     </Table>
                 </div>
         );
-    }
-
-}
-/*
-cost:65.55
-currentOdometer:5588
-distance:451
-efficiency:11.36319290465632
-previousOdometer:5137
-timestamp:1482516322301
-tireType:"W"
-volume:51.248
-*/
-
-function dateFormat(date) {
-    var d = new Date(date);
-    if (d.getFullYear() <= 2016 && d.getMonth() <= 2) return "n/a";
-    return moment(date).format('MMM Do YYYY');
-//    return d.toDateString();
-}
-
-export default GasLog;
+        */

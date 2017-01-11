@@ -2,6 +2,10 @@ table {
     font-size: 9pt;
 }
 
+.centerContent {
+    text-align: center;
+}
+
 .fullScreen {
     position: absolute;
     background-color: #ccc;
@@ -46,4 +50,13 @@ table {
 .icon-facebook {
     background-color: #4863ae;
     color: white;
+}
+
+.custom-tooltip {
+    width: 150px;
+    margin: 0;
+    line-height: 24px;
+    border: 1px solid #333333;
+    background-color: rgba(255, 255, 255, 0.95);
+    padding: 10px;
 }
