@@ -32,4 +32,8 @@ Builds the app for production to the `build` folder.
 
 Your app is ready to be deployed!
 
+## Screenshots
 
+![Alt text](/ss_newentry.png?raw=true "New Entry")
+
+![Alt text](/ss_graph.png?raw=true "Fuel Efficiency Graph")

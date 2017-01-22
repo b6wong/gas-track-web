@@ -62,8 +62,7 @@ class GasLog extends React.Component {
                 <Row>
                     <Col xs={12} md={6} mdOffset={3}>
                     
-                    <h1 className="centerContent">Fuel Efficiency</h1>
-                    <h1 className="centerContent">(L/100km)</h1>
+                    
                     {
                         gasLogStore.isNewEntryMode() ? 
                         <Form schema={schema}

@@ -13,7 +13,11 @@ class ChartEfficiency extends React.Component {
     const chartData = gasLogStore.getCalculatedLog();
 
     return (
-        <ShowChart chartData={chartData} />
+        <div>
+            <h1 className="centerContent">Fuel Efficiency</h1>
+            <h1 className="centerContent">(L/100km)</h1>
+            <ShowChart chartData={chartData} />
+        </div>
     );
 
   }
